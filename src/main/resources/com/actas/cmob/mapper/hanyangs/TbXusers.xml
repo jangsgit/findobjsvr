@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- mapper >> interface 매핑 : id 값 중요 (interface 메소드) -->
+<mapper namespace="com.actas.cmob.Mapper.Hanyangs.HanyangsDBMapper">
+    <select id="GetTBXa012Blank" resultType="com.actas.cmob.DTO.Hanyangs.HanyangsModel">
+        select '' as  custcd, '' as spjangcd, '' as spjangnm, '' as custperclsf, '' as saupnum, '' as prenm, '' as corpnum, '' as biztype, '' as item, '' as tel1, '' as fax,
+               '' as zipcd, '' as adresa, '' as adresb, '' as popidmsg, '' as poppw, '' as guchung, '' as reqcustcd,'' as cmsmemo, '' as cmspass, '' as agnertel1, '' as agnertel2 from dual
+    </select>
+
+</mapper>

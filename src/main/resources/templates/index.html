@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layouts/layout01/fragments/head :: headFragment" />
+
+<body>
+  <!-- ===============================================-->
+  <!--    Main Content-->
+  <!-- ===============================================-->
+  <main class="main" id="top">
+    <nav class="navbar navbar-standard navbar-expand-lg fixed-top navbar-dark"
+      data-navbar-darken-on-scroll="data-navbar-darken-on-scroll">
+      <div class="container"><a class="navbar-brand" th:href="@{/}"><span
+            class="text-white dark__text-white">ActasERP</span></a>
+        <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
+          data-bs-target="#navbarStandard" aria-controls="navbarStandard" aria-expanded="false"
+          aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+
+      </div>
+    </nav>
+
+
+
+    <!-- ============================================-->
+    <!-- <section> begin ============================-->
+    <section class="py-0 overflow-hidden light" id="banner">
+
+      <div class="bg-holder overlay"
+        style="background-image:url(../assets/img/generic/bg-1.jpg);background-position: center bottom;">
+      </div>
+      <!--/.bg-holder-->
+
+      <div class="container">
+        <div class="row flex-center pt-8 pt-lg-10 pb-lg-9 pb-xl-0">
+          <div class="col-md-11 col-lg-8 col-xl-4 pb-7 pb-xl-9 text-center text-xl-start"><a
+              class="btn btn-outline-danger mb-4 fs--1 border-2 rounded-pill" href="#!"><span class="me-2" role="img"
+                aria-label="Gift">🎁</span>Become a pro</a>
+            <h1 class="text-white fw-light">Bring <span class="typed-text fw-bold"
+                data-typed-text='["design","beauty","elegance","perfection"]'></span><br />to your webERP</h1>
+            <p class="lead text-white opacity-75">With the power of Actas, you can now focus only on functionaries for
+              your digital source, while leaving the data service on us!</p><a
+              class="btn btn-outline-light border-2 rounded-pill btn-lg mt-4 fs-0 py-2" th:href="@{/members/loginForm}">Start building with
+              the Actas!!<span class="fas fa-play ms-2" data-fa-transform="shrink-6 down-1"></span></a>
+          </div>
+          <div class="col-xl-7 offset-xl-1 align-self-end mt-4 mt-xl-0"><a class="img-landing-banner rounded"
+              th:href="@{/members/loginForm}"><img class="img-fluid" src="" alt="" /></a>  <!--../assets/img/generic/dashboard-alt.jpg"-->
+          </div>
+        </div>
+      </div>
+      <!-- end of .container-->
+
+    </section>
+    <!-- <section> close ============================-->
+    <!-- ============================================-->
+
+
+
+
+
+
+
+
+    <!-- <div class="modal fade" id="authentication-modal" tabindex="-1" role="dialog"
+      aria-labelledby="authentication-modal-label" aria-hidden="true">
+      <div class="modal-dialog mt-6" role="document">
+        <div class="modal-content border-0">
+          <div class="modal-header px-5 position-relative modal-shape-header bg-shape">
+            <div class="position-relative z-index-1 light">
+              <h4 class="mb-0 text-white" id="authentication-modal-label">Register</h4>
+              <p class="fs--1 mb-0 text-white">Please create your free Falcon account</p>
+            </div>
+            <button class="btn-close btn-close-white position-absolute top-0 end-0 mt-2 me-2" data-bs-dismiss="modal"
+              aria-label="Close"></button>
+          </div>
+          <div class="modal-body py-4 px-5">
+            <form>
+              <div class="mb-3">
+                <label class="form-label" for="modal-auth-name">Name</label>
+                <input class="form-control" type="text" autocomplete="on" id="modal-auth-name" />
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="modal-auth-email">Email address</label>
+                <input class="form-control" type="email" autocomplete="on" id="modal-auth-email" />
+              </div>
+              <div class="row gx-2">
+                <div class="mb-3 col-sm-6">
+                  <label class="form-label" for="modal-auth-password">Password</label>
+                  <input class="form-control" type="password" autocomplete="on" id="modal-auth-password" />
+                </div>
+                <div class="mb-3 col-sm-6">
+                  <label class="form-label" for="modal-auth-confirm-password">Confirm Password</label>
+                  <input class="form-control" type="password" autocomplete="on" id="modal-auth-confirm-password" />
+                </div>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="modal-auth-register-checkbox" />
+                <label class="form-label" for="modal-auth-register-checkbox">I accept the <a href="#!">terms </a>and <a
+                    href="#!">privacy policy</a></label>
+              </div>
+              <div class="mb-3">
+                <button class="btn btn-primary d-block w-100 mt-3" type="submit" name="submit">Register</button>
+              </div>
+            </form>
+            <div class="position-relative mt-5">
+              <hr class="bg-300" />
+              <div class="divider-content-center">or register with</div>
+            </div>
+            <div class="row g-2 mt-2">
+              <div class="col-sm-6"><a class="btn btn-outline-google-plus btn-sm d-block w-100" href="#"><span
+                    class="fab fa-google-plus-g me-2" data-fa-transform="grow-8"></span> google</a></div>
+              <div class="col-sm-6"><a class="btn btn-outline-facebook btn-sm d-block w-100" href="#"><span
+                    class="fab fa-facebook-square me-2" data-fa-transform="grow-8"></span> facebook</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+  </main>
+  <!-- ===============================================-->
+  <!--    End of Main Content-->
+  <!-- ===============================================-->
+
+  <footer th:replace="layouts/layout01/fragments/footer :: footerFragment"></footer>
+</body>
+
+</html>

@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- mapper >> interface 매핑 : id 값 중요 (interface 메소드) -->
+<mapper namespace="com.actas.cmob.Mapper.Kosep.KosepDBMapper">
+
+    <select id="GetUserInfo" parameterType="com.actas.cmob.DTO.UserFormDto"  resultType="com.actas.cmob.DTO.UserFormDto">
+        select top 1 userid, passwd1,  custnm, pernm, useyn, perid
+        from TB_XUSERS where userid=#{userid} and passwd1=#{passwd1} and useyn = '1'
+    </select>
+    <select id="GetTBDA035List" parameterType="com.actas.cmob.DTO.Kosep.KosepPopDto"  resultType="com.actas.cmob.DTO.Kosep.KosepList01Dto">
+        select  A.custcd AS custcd, A.spjangcd as spjangcd, B.cltcd as cltcd,
+                substring(A.fdeldate, 5,2) + '/' + substring(A.fdeldate, 7,2) as fdeldatetext, A.fdeldate  as fdeldate,
+                A.fdelnum as fdelnum, A.fdelseq as fdelseq, isnull(A.pcode,'') as pcode, isnull(D.phm_pnam,'') as pname,
+                isnull(A.grade,'') as grade, isnull(A.width,0) as width, isnull(A.thick,0) as thick,
+                isnull(A.color,'') as color, isnull(A.deldate,'') as deldate, isnull(A.delnum,'') as delnum,
+                isnull(A.delseq,'') as delseq,  isnull(A.qty,0) as qty, isnull(A.uamt,0) as uamt, isnull(C.cltnm,'') as cltnm
+        from TB_DA035 A WITH (NOLOCK) , TB_DA034 B WITH (NOLOCK) , TB_XCLIENT C WITH (NOLOCK) , TB_CA501 D WITH (NOLOCK)
+        where A.spjangcd = B.spjangcd and A.fdeldate = B.fdeldate and A.fdelnum=B.fdelnum
+           AND B.cltcd = C.cltcd and A.pcode = D.phm_pcod and  A.fdeldate = #{todate} and ( Len(isnull(A.deldate , '')) = 0)
+    </select>
+    <select id="GetTBDA035ChulList" parameterType="com.actas.cmob.DTO.Kosep.KosepPopDto"  resultType="com.actas.cmob.DTO.Kosep.KosepList01Dto">
+        select  A.custcd AS custcd, A.spjangcd as spjangcd, B.cltcd as cltcd,
+                substring(A.fdeldate, 5,2) + '/' + substring(A.fdeldate, 7,2) as fdeldatetext, A.fdeldate  as fdeldate,
+                A.fdelnum as fdelnum, A.fdelseq as fdelseq, isnull(A.pcode,'') as pcode, isnull(D.phm_pnam,'') as pname,
+                isnull(A.grade,'') as grade, isnull(A.width,0) as width, isnull(A.thick,0) as thick,
+                isnull(A.color,'') as color, isnull(E.deldate,'') as deldate, isnull(E.delnum,'') as delnum,
+                isnull(E.seq,'') as delseq,  isnull(A.qty,0) as qty, isnull(C.cltnm,'') as cltnm, E.lotno as lotno
+        from TB_DA035 A WITH (NOLOCK) , TB_DA034 B WITH (NOLOCK) , TB_XCLIENT C WITH (NOLOCK) , TB_CA501 D WITH (NOLOCK), TB_DA037H E WITH (NOLOCK)
+        where A.spjangcd = B.spjangcd and A.fdeldate = B.fdeldate and A.fdelnum=B.fdelnum
+          AND B.cltcd = C.cltcd and A.pcode = D.phm_pcod and A.deldate + A.delnum   = E.deldate + E.delnum
+          AND A.deldate = #{todate} and ( Len(isnull(A.deldate , '')) > 0)
+          ORDER BY E.deldate, E.delnum, E.seq
+    </select>
+
+    <select id="GetTBDA037ChulList" parameterType="com.actas.cmob.DTO.Kosep.KosepPopDto"  resultType="com.actas.cmob.DTO.Kosep.KosepList01Dto">
+        select  A.custcd AS custcd, A.spjangcd as spjangcd, B.cltcd as cltcd,
+                substring(A.deldate, 5,2) + '/' + substring(A.deldate, 7,2) as fdeldatetext, A.deldate  as deldate,
+                A.delnum as delnum, A.delseq as delseq, isnull(A.pcode,'') as pcode, isnull(D.phm_pnam,'') as pname, isnull(D.phm_size,'') as psize,
+                isnull(A.qty,0) as qty, isnull(A.uamt,0) as uamt, isnull(A.samt,0) as samt,  isnull(C.cltnm,'') as cltnm
+        from TB_DA037 A WITH (NOLOCK) , TB_DA036 B WITH (NOLOCK) , TB_XCLIENT C WITH (NOLOCK) , TB_CA501 D WITH (NOLOCK)
+        where A.spjangcd = B.spjangcd and A.deldate = B.deldate and A.delnum=B.delnum
+          AND B.cltcd = C.cltcd and A.pcode = D.phm_pcod
+          AND A.deldate = #{todate}
+          AND A.deldate + A.delnum in (select deldate + delnum from tb_da035 where deldate = #{todate} )
+        ORDER BY A.deldate, A.delnum, A.delseq
+    </select>
+
+
+    <select id="GetLotNoData" parameterType="hashmap"  resultType="com.actas.cmob.DTO.Kosep.KosepDa037Dto">
+        select A.cltcd as cltcd, A.custcd AS custcd, A.spjangcd as spjangcd, '' as deldate, '' as delnum, A.pcode as  pcode,
+        A.pname as pname, A.psize as psize, A.punit as punit, sum(A.qty) as qty, 0 as cuamt, 0 as uamt, sum(A.samt) as samt,
+        sum(A.tamt) as tamt, sum(A.mamt) as mamt, '0' as taxflag, 'KRW' as moncls, 1 as monrate, sum(A.lotqty) as lotqty, '' as indate,
+        '' as inperid
+        FROM (
+            select A.delcltcd as cltcd, A.custcd AS custcd, A.spjangcd as spjangcd, '' as deldate, '' as delnum, A.pcode as
+                    pcode, B.phm_pnam as pname, B.phm_size as psize,
+                    B.phm_unit as punit, 0 as qty, 0 as cuamt, 0 as uamt, 0 as samt, 0 as
+                    tamt,  0 as mamt, '0' as taxflag, 'KRW' as moncls, 1 as monrate, 0 as lotqty, '' as
+                    indate, '' as inperid
+            from TB_DA006_IMPORT_PANNEL A WITH (NOLOCK)
+            Left OUTER JOIN TB_CA501 B ON pcode=B.phm_pcod
+            where A.itemcd in
+                <foreach collection="itemcdArr" item="itemcd" open="(" close=")" separator=",">
+                  #{itemcd}
+                </foreach>
+                and A.color = #{color} and A.grade = #{grade} and A.thick = #{thick}
+                and A.width = #{width} and Len(isnull(A.deldate,'')) = 0
+            union all
+            select A. delcltcd as cltcd, A.custcd AS custcd, A.spjangcd as spjangcd, '' as deldate, '' as delnum, A.pcode as
+                pcode, B.phm_pnam as pname, B.phm_size as psize,
+                B.phm_unit as punit, 0 as qty, 0 as cuamt, 0 as uamt, 0 as samt, 0 as tamt, 0 as mamt, '0' as taxflag, 'KRW' as moncls,
+                1 as monrate, 0 as lotqty, '' as indate, '' as inperid
+            from TB_DA006_IMPORT_WINGBADY A WITH (NOLOCK)
+            Left OUTER JOIN TB_CA501 B ON pcode=B.phm_pcod
+            where A.itemcd in
+                <foreach collection="itemcdArr" item="itemcd"  open="(" close=")" separator=",">
+                  #{itemcd}
+                </foreach>
+                and A.color = #{color} and A.grade = #{grade} and A.thick = #{thick}
+                and A.width = #{width} and Len(isnull(A.deldate,'')) = 0
+        ) A
+        GROUP BY A.cltcd, A.custcd, A.spjangcd, A.pcode, A.pname, A.psize, A.punit
+
+    </select>
+
+    <select id="GetLotNoList" parameterType="com.actas.cmob.DTO.Kosep.KosepPopDto"  resultType="com.actas.cmob.DTO.Kosep.KosepDa037Dto">
+        select A.delcltcd as cltcd,  A.custcd AS custcd, A.spjangcd as spjangcd, '' as deldate, '' as delnum, A.pcode as pcode, B.phm_pnam as pname, B.phm_size as psize,
+                B.phm_unit as punit,  A.delcqty as qty, 0 as cuamt,  A.deluamt as uamt,  A.delsamt as samt, (A.delsamt * 0.1) as tamt,
+                 A.delsamt + (A.delsamt * 0.1) as mamt, '0' as taxflag, 'KRW' as moncls, 1 as monrate, A.coilqty as coilqty, '' as indate, '' as inperid
+        from TB_DA006_IMPORT_PANNEL A WITH (NOLOCK)
+            Left OUTER JOIN TB_CA501 B ON pcode=B.phm_pcod
+        where A.itemcd = #{lotno}
+          and A.color = #{color} and A.grade = #{grade} and A.thick = #{thick}
+          and A.width = #{width} and Len(isnull(A.deldate,'')) = 0
+
+        union all
+
+
+        select  A.delcltcd as cltcd, A.custcd AS custcd, A.spjangcd as spjangcd, '' as deldate, '' as delnum, A.pcode as pcode, B.phm_pnam as pname, B.phm_size as psize,
+                 B.phm_unit as punit,  A.deljqty as qty, 0 as cuamt,  A.deluamt as uamt,  A.delsamt as samt, (A.delsamt * 0.1) as tamt,
+                 A.delsamt + (A.delsamt * 0.1) as mamt, '0' as taxflag, 'KRW' as moncls, 1 as monrate, A.coilqty as coilqty, '' as indate, '' as inperid
+        from TB_DA006_IMPORT_WINGBADY A WITH (NOLOCK)
+            Left OUTER JOIN TB_CA501 B ON pcode=B.phm_pcod
+        where A.itemcd = #{lotno} and A.color = #{color} and A.grade = #{grade} and A.thick = #{thick}
+          and A.width = #{width} and Len(isnull(A.deldate,'')) = 0
+    </select>
+
+    <select id="getDa036MaxSeq" parameterType="com.actas.cmob.DTO.Kosep.KosepPopDto"   resultType="java.lang.String">
+        select max(delnum) from TB_DA036 where deldate = #{fdeldate}
+    </select>
+
+
+    <delete id="DeleteDA036" parameterType="com.actas.cmob.DTO.Kosep.KosepPopDto">
+        delete from tb_da036
+        where deldate = #{deldate} and delnum = #{delnum}
+          and deldate + delnum not in (select deldate + delnum from tb_da037 where deldate = #{deldate} and delnum=#{delnum} )
+    </delete>
+
+    <delete id="DeleteDA037" parameterType="com.actas.cmob.DTO.Kosep.KosepPopDto">
+        delete from tb_da037
+        where deldate = #{deldate} and delnum=#{delnum} and delseq=#{delseq}
+        <!-- and deldate + delnum not in (select deldate + delnum from tb_da037H where deldate = #{deldate} and delnum=#{delnum}   )  -->
+    </delete>
+
+    <delete id="DeleteDA037H" parameterType="com.actas.cmob.DTO.Kosep.KosepPopDto">
+        delete from tb_da037H where deldate = #{deldate} and delnum=#{delnum} and lotno =#{lotno}
+    </delete>
+
+    <update id="DeleteDA035" parameterType="com.actas.cmob.DTO.Kosep.KosepPopDto">
+        update tb_da035 set deldate = null, delnum = null, delseq =null
+        where deldate = #{deldate} and delnum=#{delnum}
+         and deldate + delnum not in (select deldate + delnum from tb_da037 where deldate = #{deldate} and delnum=#{delnum} )
+    </update>
+
+
+    <update id="DeleteDA006PAN" parameterType="com.actas.cmob.DTO.Kosep.KosepPopDto">
+        update TB_DA006_IMPORT_PANNEL set deldate = null, delnum = null, delseq =null   where deldate = #{deldate} and delnum=#{delnum} and delseq =#{delseq}
+    </update>
+
+
+    <update id="DeleteDA006WIN" parameterType="com.actas.cmob.DTO.Kosep.KosepPopDto">
+        update TB_DA006_IMPORT_WINGBADY set deldate = null, delnum = null, delseq =null  where deldate = #{deldate} and delnum=#{delnum} and delseq =#{delseq}
+    </update>
+
+    <insert id="InsertDA036" parameterType="com.actas.cmob.DTO.Kosep.KosepDa036Dto" >
+        insert into tb_da036 (custcd, spjangcd, deldate, delnum, deltype, cltcd, perid, taxcls,setcls, store, domcls, moncls, monrate, sunamt, sunflag,inperid,
+                              taxflag, selflag, reqdate, mcltdv, banflag, ppgun, pagrb, indate, grpflag) values
+            (#{custcd}, #{spjangcd},  #{deldate}, #{delnum}, #{deltype}, #{cltcd}, #{perid}, #{taxcls},#{setcls}, #{store}, #{domcls}, #{moncls}, #{monrate}, #{sunamt}, #{sunflag}, #{inperid},
+             #{taxflag},#{selflag},#{reqdate},#{mcltdv},#{banflag},#{ppgun},#{pagrb},#{indate},#{grpflag})
+    </insert>
+
+    <sql id="da037Columns">
+           custcd
+          ,spjangcd
+          ,deldate
+          ,delnum
+          ,delseq
+          ,pcode
+          ,pname
+          ,psize
+          ,punit
+          ,qty
+          ,cuamt
+          ,uamt
+          ,samt
+          ,tamt
+          ,mamt
+          ,taxflag
+          ,moncls
+          ,monrate
+          ,lotqty
+          ,indate
+          ,inperid
+    </sql>
+
+
+    <sql id="da037HColumns">
+        custcd
+        ,spjangcd
+          ,deldate
+          ,delnum
+          ,seq
+          ,store
+          ,pcode
+          ,lotno
+          ,qty
+          ,uamt
+    </sql>
+
+    <insert id="InsertDa037" parameterType="com.actas.cmob.DTO.Kosep.KosepDa037Dto" >
+
+        insert into tb_da037 (custcd, spjangcd, deldate, delnum, delseq, pcode, qty, cuamt, uamt, samt, tamt, mamt, lotqty, indate,inperid) values
+        (#{custcd}, #{spjangcd},  #{deldate}, #{delnum}, #{delseq}, #{pcode}, #{qty}, 0, #{uamt}, #{samt}, #{tamt}, #{mamt}, 0, #{indate}, #{inperid})
+
+<!--        INSERT INTO tb_da037 (-->
+<!--        <include refid="da037Columns" />-->
+<!--        ) VALUES-->
+<!--        <foreach collection="list" item="item" separator=",">-->
+<!--            (-->
+<!--             #{item.custcd}-->
+<!--            ,#{item.spjangcd}-->
+<!--            ,#{item.deldate}-->
+<!--            ,#{item.delnum}-->
+<!--            ,#{item.delseq}-->
+<!--            ,#{item.pcode}-->
+<!--            ,#{item.pname}-->
+<!--            ,#{item.psize}-->
+<!--            ,#{item.punit}-->
+<!--            ,#{item.qty}-->
+<!--            ,#{item.cuamt}-->
+<!--            ,#{item.uamt}-->
+<!--            ,#{item.samt}-->
+<!--            ,#{item.tamt}-->
+<!--            ,#{item.mamt}-->
+<!--            ,#{item.taxflag}-->
+<!--            ,#{item.moncls}-->
+<!--            ,#{item.monrate}-->
+<!--            ,#{item.lotqty}-->
+<!--            ,#{item.indate}-->
+<!--            ,#{item.inperid}-->
+<!--            )-->
+<!--        </foreach>-->
+
+    </insert>
+
+    <insert id="InsertDa037H" parameterType="com.actas.cmob.DTO.Kosep.KosepDa037HDto" >
+        insert into tb_da037h (custcd, spjangcd, deldate, delnum, seq, store, pcode, lotno, qty, uamt) values
+        (#{custcd}, #{spjangcd},  #{deldate}, #{delnum}, #{seq}, #{store}, #{pcode}, #{lotno}, #{qty}, #{uamt})
+
+<!--        INSERT INTO tb_da037H (-->
+<!--        <include refid="da037HColumns" />-->
+<!--        ) VALUES-->
+<!--        <foreach collection="list" item="item" separator=",">-->
+<!--            (-->
+<!--            #{item.custcd}-->
+<!--            ,#{item.spjangcd}-->
+<!--            ,#{item.deldate}-->
+<!--            ,#{item.delnum}-->
+<!--            ,#{item.seq}-->
+<!--            ,#{item.store}-->
+<!--            ,#{item.pcode}-->
+<!--            ,#{item.lotno}-->
+<!--            ,#{item.qty}-->
+<!--            ,#{item.uamt}-->
+<!--            )-->
+<!--        </foreach>-->
+
+    </insert>
+
+
+    <update id="UpdateTBda035" parameterType="com.actas.cmob.DTO.Kosep.KosepPopDto">
+        update TB_DA035
+        set spjangcd = 'ZZ'
+        <if test="deldate != null ">,</if>
+        <if test="deldate != null">deldate=#{deldate}</if>
+        <if test="delnum != null ">,</if>
+        <if test="delnum != null">delnum=#{delnum}</if>
+        <if test="delseq != null ">,</if>
+        <if test="delseq != null">delseq=#{delseq}</if>
+        where  fdeldate = #{fdeldate} and fdelnum=#{fdelnum} and fdelseq=#{fdelseq}
+    </update>
+
+
+    <update id="UpdateDA006PANNEL" parameterType="com.actas.cmob.DTO.Kosep.KosepPopDto">
+        update TB_DA006_IMPORT_PANNEL
+        set deldate=#{deldate},
+            delnum=#{delnum},
+            delseq=#{delseq}
+        where itemcd = #{lotno}
+    </update>
+
+    <update id="UpdateDA006WINGBADY" parameterType="com.actas.cmob.DTO.Kosep.KosepPopDto">
+        update TB_DA006_IMPORT_WINGBADY
+        set deldate=#{deldate},
+            delnum=#{delnum},
+            delseq=#{delseq}
+        where itemcd = #{lotno}
+    </update>
+
+</mapper>
