@@ -305,7 +305,7 @@ public class Appkosep01Controller {
     }
 
     //  //출고현황
-    @RequestMapping(value="/list04",method = RequestMethod.POST,
+/*    @RequestMapping(value="/list04",method = RequestMethod.POST,
             headers = ("content-type=multipart/*"),
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public Object Appcom04_index(@RequestParam Map<String, String> param
@@ -324,7 +324,7 @@ public class Appkosep01Controller {
         });
         list01Dto = authService.GetTBDA037ChulList(popDto);
         return list01Dto;
-    }
+    }*/
 
 
 
@@ -381,11 +381,11 @@ public class Appkosep01Controller {
         }
 
 
-        queryResult = authService.DeleteDA035(popDto);
+      /*  queryResult = authService.DeleteDA035(popDto);
         if(queryResult < 1){
 //            queryResult = 0;
 //            return "DeleteDA035 ERROR";
-        }
+        }*/
 
         queryResult = authService.DeleteDA006PAN(popDto);
         if(queryResult < 1){

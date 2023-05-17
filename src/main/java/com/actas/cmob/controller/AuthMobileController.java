@@ -56,6 +56,7 @@ public class AuthMobileController {
         UserFormDto userReturnDto = authService.GetUserInfo(userformDto);
         userReturnDto.setDbnm(_dbnm);
         userReturnDto.setUsername(userReturnDto.getPernm());
+        log.info("로그인 진입");
         return userReturnDto;
 
     }
