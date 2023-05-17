@@ -309,9 +309,11 @@
         ISNULL(phm_unit, '') as phm_unit,
         ISNULL(code88, '')   as code88
         from tb_ca501
-        where phm_cust = 'THEMOON' and code88 = '8804712022341'
+        where phm_cust = 'THEMOON' and code88 = #{code88}
 
     </select>
+
+    <!--88041712022341-->
 
     <select id="Store_Info" parameterType="com.actas.cmob.DTO.Themoon.PopDto" resultType="com.actas.cmob.DTO.Themoon.ThemoonListDto2">
         SELECT ISNULL(TB_FPLAN.wono,'') as wono, ISNULL(TB_FPLAN.lotno,'') as lotno, ISNULL(TB_FPLAN.plan_no,'') as plan_no, ISNULL(TB_FPLAN.cltcd,'') as cltcd,
@@ -488,8 +490,10 @@
         ISNULL(dbo.DF_TB_CA601_ENDDATE('THEMOON', 'ZZ', #{gs_today}, 'P01', phm_pcod),'') as stdate,
         ISNULL(CONVERT(VARCHAR(10) ,dbo.DF_TB_CA602_PCODE_JQTY('THEMOON', 'ZZ', 'P01', phm_pcod, dbo.DF_TB_CA601_ENDDATE('THEMOON', 'ZZ', #{gs_today}, 'P01', phm_pcod), #{gs_today})), '')
         as jaeqty
-        from tb_ca501 with(nolock) where phm_cust = 'THEMOON' and code88 = '8804712022341'
+        from tb_ca501 with(nolock) where phm_cust = 'THEMOON' and code88 = #{code88}
     </select>
+
+    <!--8804712022341-->
 
     <!--재고량 계산-->
     <select id="select_jaeqty" parameterType="com.actas.cmob.DTO.Themoon.PopDto" resultType="com.actas.cmob.DTO.Themoon.ThemoonListDto2">
