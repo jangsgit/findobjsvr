@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- mapper >> interface 매핑 : id 값 중요 (interface 메소드) -->
+<mapper namespace="com.actas.cmob.Mapper.CA609.CA609Mapper">
+
+    <select id="GetUserInfo" parameterType="com.actas.cmob.DTO.UserFormDto"  resultType="com.actas.cmob.DTO.UserFormDto">
+        select top 1 userid, passwd1, custnm, pernm, useyn, perid, custcd
+        from TB_XUSERS where userid=#{userid} and passwd1=#{passwd1} and useyn = '1'
+    </select>
+
+    <select id="GetBarcodeInfo" parameterType="com.actas.cmob.DTO.CA609.CA609PopDto"  resultType="com.actas.cmob.DTO.CA609.CA609Dto">
+        SELECT phm_pcod as pcode, phm_pnam as pname, phm_size as psize, phm_unit as punit, code88
+        FROM TB_CA501 WITH(NOLOCK) WHERE phm_cust = #{custcd} AND code88 = #{lotno}
+    </select>
+
+    <select id="GetQtyInfo" parameterType="com.actas.cmob.DTO.CA609.CA609Dto" resultType="com.actas.cmob.DTO.CA609.CA609Dto">
+        SELECT ISNULL(TB_CA609.ischdate,'') as ischdate, ISNULL(TB_CA608.cltcd,'') as cltcd, ISNULL(TB_XCLIENT.cltnm,'') as cltnm, ISNULL(TB_CA609.pcode,'') as pcode, ISNULL(TB_CA609.pname,'') as pname, ISNULL(TB_CA609.psize,'') as psize,
+        ISNULL(TB_CA609.punit,'') as punit, ISNULL(TB_CA608.qcflag, '') as qcflag, ISNULL(TB_CA608.ibgflag, '') as ibgflag,
+        ISNULL((TB_CA609.qty - TB_CA609.qcqty),0) as wmqty, ISNULL(TB_CA608.baldate,'') as baldate, ISNULL(TB_CA608.balnum,'') as balnum, ISNULL(TB_CA609.balseq,'') as balseq, ISNULL(TB_CA608.store,'') as store, ISNULL(TB_CA608.comcd,'') as comcd,
+        ISNULL(TB_CA608.divicd, '') as divicd, ISNULL(TB_CA609.qty, 0) as qty, ISNULL(TB_CA609.qcdv, '') as qcdv
+        FROM TB_CA608 WITH(NOLOCK), TB_CA609 WITH(NOLOCK), TB_XCLIENT WITH(NOLOCK), TB_CA501 WITH(NOLOCK)
+        WHERE (TB_CA608.custcd = TB_CA609.custcd) AND (TB_CA608.spjangcd = TB_CA609.spjangcd) AND (TB_CA608.baldate = TB_CA609.baldate) AND (TB_CA608.balnum = TB_CA609.balnum)
+        AND (TB_CA608.balnum = TB_CA609.balnum) AND (TB_CA608.custcd = TB_XCLIENT.custcd) AND (TB_CA608.cltcd = TB_XCLIENT.cltcd)
+        AND (TB_CA609.custcd = TB_CA501.phm_cust) AND (TB_CA609.pcode = TB_CA501.phm_pcod) AND (LEN(ISNULL(TB_CA501.code88, '')) > 0)
+        AND (TB_CA608.custcd = 'THEMOON') AND (TB_CA608.spjangcd = 'ZZ') AND (TB_CA609.pcode = #{pcode})
+        AND (TB_CA609.ibgflag NOT IN ('2', '9')) AND (TB_CA609.qcflag NOT IN ('2', '9')) AND (TB_CA609.qcdv NOT IN ('9'))
+        ORDER BY TB_CA609.ischdate, TB_CA608.cltcd, TB_CA609.pcode
+    </select>
+
+    <update id="UpdateBalInfoBody" parameterType="com.actas.cmob.DTO.CA609.CA609Dto">
+        UPDATE TB_CA609 SET qcflag = '2', qcqty = qcqty + #{wqcqty}
+        WHERE custcd = #{custcd} AND spjangcd = #{spjangcd} AND baldate = #{baldate} AND balnum = #{balnum} AND balseq = #{balseq}
+    </update>
+
+    <select id="GetBalInfoBody" parameterType="com.actas.cmob.DTO.CA609.CA609Dto" resultType="com.actas.cmob.DTO.CA609.CA609Dto">
+        SELECT COUNT(*) as ll_cnt, SUM(CASE qcflag WHEN '1' THEN 1 WHEN '0' THEN 1 ELSE 0 END) as ll_cnt1,
+        SUM(CASE qcflag WHEN '2' THEN 1 ELSE 0 END) as ll_cnt2,
+        SUM(CASE ibgflag WHEN '1' THEN 1 WHEN '0' THEN 1 ELSE 0 END) as ll_cnt3,
+        SUM(CASE ibgflag WHEN '2' THEN 1 WHEN '9' THEN 1 ELSE 0 END) as ll_cnt4
+        FROM TB_CA609 WITH(NOLOCK) WHERE custcd = #{custcd} AND spjangcd = #{spjangcd} AND baldate = #{baldate} AND balnum = #{balnum}
+    </select>
+
+    <select id="GetBalInfoHead" parameterType="com.actas.cmob.DTO.CA609.CA609Dto" resultType="com.actas.cmob.DTO.CA609.CA609Dto">
+        SELECT COUNT(*) as ll_cnt, SUM(CASE qcflag WHEN '1' THEN 1 WHEN '0' THEN 1 ELSE 0 END) as ll_cnt1,
+        SUM(CASE qcflag WHEN '2' THEN 1 ELSE 0 END) as ll_cnt2,
+        SUM(CASE ibgflag WHEN '1' THEN 1 WHEN '0' THEN 1 ELSE 0 END) as ll_cnt3,
+        SUM(CASE ibgflag WHEN '2' THEN 1 WHEN '9' THEN 1 ELSE 0 END) as ll_cnt4
+        FROM TB_CA609 WITH(NOLOCK) WHERE custcd = #{custcd} AND spjangcd = #{spjangcd} AND baldate = #{baldate} AND balnum = #{balnum}
+    </select>
+
+    <update id="UpdateBalInfoHead" parameterType="com.actas.cmob.DTO.CA609.CA609Dto">
+        UPDATE TB_CA608 SET qcflag = #{qcflag}, ibgflag = #{ibgflag}
+        WHERE custcd = #{custcd} AND spjangcd = #{spjangcd} AND baldate = #{baldate} AND balnum = #{balnum}
+    </update>
+
+    <update id="UpdateBal" parameterType="com.actas.cmob.DTO.CA609.CA609Dto">
+        UPDATE TB_FPLAN SET rwflag = '2', close_date = '', end_qty = 0, close_perid = '', wflag = '00010', wseq = '01', decision = '0'
+        WHERE custcd = #{custcd} AND spjangcd = #{spjangcd} AND plan_no = #{plan_no}
+    </update>
+
+    <insert id="InsertLog" parameterType="com.actas.cmob.DTO.CA609.CA609Dto">
+        INSERT INTO TB_XLOGIN_H ( londt, custcd, spjangcd, userid, winid, buton, ipaddr, usernm, winnm, tbkey )
+        VALUES ( GETDATE(), #{custcd}, #{spjangcd}, #{userid}, #{winid}, #{buton}, #{ipaddr}, #{usernm}, #{winnm}, '' )
+    </insert>
+
+    <select id="GetNowList" parameterType="com.actas.cmob.DTO.CA609.CA609Dto" resultType="com.actas.cmob.DTO.CA609.CA609Dto">
+        SELECT TB_CA623.custcd, TB_CA623.spjangcd, ISNULL(TB_CA623.qcdate, '19991231') as qcdate, ISNULL(TB_CA623.qcnum, '0000') as qcnum, TB_CA623.cltcd, TB_XCLIENT.cltnm, TB_CA624.pcode, TB_CA624.pname, TB_CA624.psize, TB_CA624.punit,
+        TB_CA624.qty, TB_CA609.baldate as baldate, TB_CA609.balnum as balnum, TB_CA609.balseq as balseq
+        FROM TB_CA623 WITH(NOLOCK), TB_CA624 WITH(NOLOCK), TB_XCLIENT WITH(NOLOCK), TB_CA609 WITH(NOLOCK)
+        WHERE (TB_CA623.custcd = TB_CA624.custcd) AND (TB_CA623.spjangcd = TB_CA624.spjangcd) AND (TB_CA623.qcdate = TB_CA624.qcdate)
+        AND (TB_CA623.qcnum = TB_CA624.qcnum) AND (TB_CA623.custcd = TB_XCLIENT.custcd) AND (TB_CA623.cltcd = TB_XCLIENT.cltcd)
+        and TB_CA624.baldate + TB_CA624.balnum + TB_CA624.balseq =   TB_CA609.baldate + TB_CA609.balnum + TB_CA609.balseq
+        AND (TB_CA623.custcd = #{custcd}) AND (TB_CA623.spjangcd = #{spjangcd}) AND (TB_CA623.qcdate = #{qcdate})
+        ORDER BY TB_CA623.cltcd
+    </select>
+
+    <select id="GetBalSeqInfo" parameterType="com.actas.cmob.DTO.CA609.CA609Dto" resultType="com.actas.cmob.DTO.CA609.CA609Dto">
+        SELECT ISNULL(qty, 0) as le_balqty, ISNULL(qcqty, 0) as le_qcqty
+        FROM TB_CA609 WITH(NOLOCK)
+        WHERE custcd = #{custcd} AND spjangcd = #{spjangcd} AND baldate = #{baldate} AND balnum = #{balnum} AND balseq = #{balseq}
+    </select>
+
+    <update id="CancelQc" parameterType="com.actas.cmob.DTO.CA609.CA609Dto">
+        UPDATE TB_CA609 SET qcflag = :ls_qcflag, qcqty = :le_qcqty
+        WHERE custcd = :gs_custcd AND spjangcd = :gs_spjangcd AND baldate = :as_baldate AND balnum = :as_balnum AND balseq = :as_balseq
+    </update>
+
+    <select id="GetCntInfo" parameterType="com.actas.cmob.DTO.CA609.CA609Dto" resultType="com.actas.cmob.DTO.CA609.CA609Dto">
+        SELECT COUNT(*) as ll_cnt, SUM(CASE qcflag WHEN '1' THEN 1 WHEN '0' THEN 1 ELSE 0 END) as ll_cnt1,
+        SUM(CASE qcflag WHEN ‘2’ THEN 1 ELSE 0 END) as ll_cnt2,
+        SUM(CASE ibgflag WHEN ＇1＇ THEN 1 WHEN ＇0＇ THEN 1 ELSE 0 END) as ll_cnt3,
+        SUM(CASE ibgflag WHEN ＇2＇ THEN 1 WHEN ＇9' THEN 1 ELSE 0 END) as ll_cnt4
+        FROM TB_CA609 WITH(NOLOCK) WHERE custcd = #{custcd} AND spjangcd = #{spjangcd} AND baldate = #{baldate} AND balnum = #{balnum}
+    </select>
+
+    <update id="CancelBal2" parameterType="com.actas.cmob.DTO.CA609.CA609Dto">
+        UPDATE TB_FPLAN SET 친_flag = ‘2’, close_date = '', end_qty = 0, close_perid = '', wflag = '00010', wseq = '01', decision = '0'
+        WHERE custcd = #{custcd} AND spjangcd = #{spjangcd} AND plan_no = :as_plan_no(생산계획번호)
+    </update>
+
+    <delete id="DeleteBalHead" parameterType="com.actas.cmob.DTO.CA609.CA609Dto">
+        DELETE FROM TB_CA623 WHERE custcd = #{custcd} AND spjangcd = #{spjangcd} AND qcdate = #{qcdate} AND qcnum = #{qcnum}
+    </delete>
+
+    <delete id="DeleteBalBody" parameterType="com.actas.cmob.DTO.CA609.CA609Dto">
+        DELETE FROM TB_CA624 WHERE custcd = #{custcd} AND spjangcd = #{spjangcd} AND qcdate = #{qcdate} AND qcnum = #{qcnum}
+    </delete>
+
+    <select id="GetCntData" parameterType="com.actas.cmob.DTO.CA609.CA609Dto" resultType="com.actas.cmob.DTO.CA609.CA609Dto">
+        SELECT COUNT(*) as ll_cnt, SUM(CASE qcflag WHEN '1' THEN 1 WHEN '0' THEN 1 ELSE 0 END) as ll_cnt1,
+        SUM(CASE qcflag WHEN '2' THEN 1 ELSE 0 END) as ll_cnt2,
+        SUM(CASE ibgflag WHEN '1' THEN 1 WHEN '0' THEN 1 ELSE 0 END) as ll_cnt3,
+        SUM(CASE ibgflag WHEN '2 THEN 1 WHEN ＇9' THEN 1 ELSE 0 END) as ll_cnt4
+        FROM TB_CA609 WITH(NOLOCK) WHERE custcd = #{custcd} AND spjangcd = #{spjangcd} AND baldate = #{baldate} AND balnum = #{balnum}
+    </select>
+
+    <select id="GetQcqty" parameterType="com.actas.cmob.DTO.CA609.CA609Dto" resultType="com.actas.cmob.DTO.CA609.CA609Dto">
+        SELECT ISNULL(qty, 0) as balqty, ISNULL(qcqty, 0) as qcqty
+        FROM TB_CA609 WITH(NOLOCK) WHERE custcd = #{custcd} AND spjangcd = #{spjangcd} AND baldate = #{baldate} AND balnum = #{balnum} and balseq = #{balseq}
+    </select>
+
+    <update id="UpdateQcflag" parameterType="com.actas.cmob.DTO.CA609.CA609Dto">
+        UPDATE TB_CA609 SET qcflag = #{qcflag}, qcqty = #{qcqty}
+        WHERE custcd = #{custcd} AND spjangcd = #{spjangcd} AND baldate = #{baldate} AND balnum = #{balnum} AND balseq = #{balseq}
+
+    </update>
+
+    <!--박광열, 수입검사등록-->
+    <update id="Update_TB_CA608" parameterType="com.actas.cmob.DTO.CA609.CA609PopDto">
+        UPDATE TB_CA608 SET qcflag = #{ls_qcflag}, ibgflag = #{ls_ibgflag}
+        WHERE custcd = 'THEMOON' and spjangcd = 'ZZ' and baldate = #{as_baldate} and balnum = #{as_balnum}
+    </update>
+
+
+    <select id="select_tb_CA623" parameterType="com.actas.cmob.DTO.CA609.CA609PopDto" resultType="java.lang.String">
+        select isnull(max(qcnum), '0000') from tb_ca623 with(nolock) where custcd = 'THEMOON' and qcdate = #{gs_today}
+    </select>
+
+    <insert id="Insert_TB_CA623" parameterType="com.actas.cmob.DTO.CA609.CA609PopDto">
+        INSERT INTO TB_CA623 (custcd, spjangcd, qcdate, qcnum, qcdv, cltcd, perid, divicd, taxcls, setcls, taxdv, givedd, store, domcls, moncls, monrate, ischdate, ibgflag,
+        baldate, balnum, ibgdate, ibgnum, remark, qcksiso, qcway, qcmasz1, qcmasz2, comcd, indate, inperid)
+        values
+        (
+        'THEMOON', 'ZZ', #{gs_today}, #{as_qcnum}, '0', #{as_cltcd}, #{gs_perid}, #{gs_divicd}, '01', '01', '', '', #{as_store}, '0', 'KRW', 1, #{as_ischdate}, '0',
+        #{as_baldate}, #{as_balnum}, '','','','','','','',#{as_comcd}, #{gs_today}, #{gs_perid}
+        )
+    </insert>
+
+    <!--ae_uamt 함수-->
+    <select id="select_DF_DANGA" resultType="java.lang.String" parameterType="com.actas.cmob.DTO.CA609.CA609PopDto">
+        select DBO.DF_DANGA_CALC('THEMOON', 'ZZ', '1', #{as_cltcd}, #{as_pcode})
+    </select>
+
+    <insert id="Insert_TB_CA624" parameterType="com.actas.cmob.DTO.CA609.CA609PopDto">
+        INSERT INTO TB_CA624 (custcd, spjangcd, qcdate, qcnum, qcseq, pcode, pname, psize, punit, qty, uamt, samt, tamt, mamt, qcdv, badqty, okqty, remarks, ibgflag, ibgqty, conck,
+        baldate, balnum, balseq, ischdate, indate, inperid)
+        values
+        (
+        'THEMOON', 'ZZ', #{gs_today}, #{as_qcnum}, #{as_qcseq}, #{as_pcode}, #{as_pname}, #{as_psize}, #{as_punit}, #{ae_qty}, #{ae_uamt}, ROUND(CONVERT(FLOAT, #{ae_qty}) * CONVERT(FLOAT, #{ae_uamt}), 0), ROUND(CONVERT(FLOAT, #{ae_qty}) * CONVERT(FLOAT, #{ae_uamt}) * 0.1, 0),
+        ROUND(CONVERT(FLOAT, #{ae_qty}) * CONVERT(FLOAT, #{ae_uamt}), 0) + ROUND(CONVERT(FLOAT, #{ae_qty}) * CONVERT(FLOAT, #{ae_uamt}) * 0.1, 0),
+        #{as_qcdv}, 0, #{ae_qty}, '', '0', 0, '1', #{as_baldate}, #{as_balnum}, #{as_balseq}, #{as_ischdate}, #{gs_today}, #{gs_perid}
+        )
+    </insert>
+
+    <select id="Maxseq" parameterType="string" resultType="java.lang.String">
+        select max(qcseq) from TB_CA624 where qcdate = #{gs_today}
+    </select>
+
+
+    <update id="Update_TB_CA609" parameterType="com.actas.cmob.DTO.CA609.CA609PopDto">
+        UPDATE TB_CA609 SET qcflag = '2', qcqty = qcqty + #{wmqty}
+        where custcd = 'THEMOON' AND spjangcd = 'ZZ' and baldate = #{as_baldate} and balnum = #{as_balnum} and balseq = #{as_balseq}
+    </update>
+
+    <select id="select_tb_ca608_head" parameterType="com.actas.cmob.DTO.CA609.CA609PopDto" resultType="com.actas.cmob.DTO.CA609.CA609Dto">
+        SELECT COUNT(*) as ll_cnt, SUM(CASE qcflag WHEN '1' THEN 1 WHEN '0' THEN 1 ELSE 0 END) as ll_cnt1,
+        SUM(CASE qcflag WHEN '2' THEN 1 ELSE 0 END) as ll_cnt2,
+        SUM(CASE ibgflag WHEN '1' THEN 1 WHEN '0' THEN 1 ELSE 0 END) as ll_cnt3,
+        SUM(CASE ibgflag WHEN '2' THEN 1 WHEN '9' THEN 1 ELSE 0 END) as ll_cnt4
+        FROM TB_CA609 WITH(NOLOCK) WHERE custcd = 'THEMOON' AND spjangcd = 'ZZ' AND baldate = #{as_baldate} AND balnum = #{as_balnum}
+    </select>
+
+</mapper>
