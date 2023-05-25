@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @RequiredArgsConstructor
+@MapperScan(value = {"com.actas.cmob.Mapper.CA609"})
 @Service("CA609Service")
 public class CA609Service {
     @Autowired
@@ -20,7 +21,7 @@ public class CA609Service {
     public List<CA609Dto> GetBarcodeInfo(CA609PopDto parm){
         String dbnm = parm.getDbnm();
         switch (dbnm){
-            case "ERP_THEMOONN":
+            case "ERP_THEMOON":
                 return CA609Mapper.GetBarcodeInfo(parm);
             default:
                 return null;
@@ -32,7 +33,7 @@ public class CA609Service {
     public List<CA609Dto> GetQtyInfo(CA609Dto parm){
         String dbnm = parm.getDbnm();
         switch (dbnm){
-            case "ERP_THEMOONN":
+            case "ERP_THEMOON":
                 return CA609Mapper.GetQtyInfo(parm);
             default:
                 return null;
@@ -44,7 +45,7 @@ public class CA609Service {
     public List<CA609Dto> GetBalInfoHead(CA609Dto parm){
         String dbnm = parm.getDbnm();
         switch (dbnm){
-            case "ERP_THEMOONN":
+            case "ERP_THEMOON":
                 return CA609Mapper.GetBalInfoHead(parm);
             default:
                 return null;
@@ -55,7 +56,7 @@ public class CA609Service {
     public int UpdateBalInfoHead(CA609Dto parm){
         String dbnm = parm.getDbnm();
         switch (dbnm){
-            case "ERP_THEMOONN":
+            case "ERP_THEMOON":
                 return CA609Mapper.UpdateBalInfoHead(parm);
             default:
                 return 0;
@@ -67,7 +68,7 @@ public class CA609Service {
     public int UpdateBal(CA609Dto parm){
         String dbnm = parm.getDbnm();
         switch (dbnm){
-            case "ERP_THEMOONN":
+            case "ERP_THEMOON":
                 return CA609Mapper.UpdateBal(parm);
             default:
                 return 0;
@@ -79,7 +80,7 @@ public class CA609Service {
     public int DeleteBalHead(CA609Dto parm){
         String dbnm = parm.getDbnm();
         switch (dbnm){
-            case "ERP_THEMOONN":
+            case "ERP_THEMOON":
                 return CA609Mapper.DeleteBalHead(parm);
             default:
                 return 0;
@@ -91,7 +92,7 @@ public class CA609Service {
     public int DeleteBalBody(CA609Dto parm){
         String dbnm = parm.getDbnm();
         switch (dbnm){
-            case "ERP_THEMOONN":
+            case "ERP_THEMOON":
                 return CA609Mapper.DeleteBalBody(parm);
             default:
                 return 0;
@@ -103,7 +104,7 @@ public class CA609Service {
     public int InsertLog(CA609Dto parm){
         String dbnm = parm.getDbnm();
         switch (dbnm){
-            case "ERP_THEMOONN":
+            case "ERP_THEMOON":
                 return CA609Mapper.InsertLog(parm);
             default:
                 return 0;
@@ -116,7 +117,7 @@ public class CA609Service {
     public List<CA609Dto> GetNowList(CA609Dto parm) {
         String dbnm = parm.getDbnm();
         switch (dbnm) {
-            case "ERP_THEMOONN":
+            case "ERP_THEMOON":
                 return CA609Mapper.GetNowList(parm);
             default:
                 return null;
@@ -126,7 +127,7 @@ public class CA609Service {
     public CA609Dto GetCntData(CA609Dto parm) {
         String dbnm = parm.getDbnm();
         switch (dbnm) {
-            case "ERP_THEMOONN":
+            case "ERP_THEMOON":
                 return CA609Mapper.GetCntData(parm);
             default:
                 return null;
@@ -136,7 +137,7 @@ public class CA609Service {
     public CA609Dto GetQcqty(CA609Dto parm) {
         String dbnm = parm.getDbnm();
         switch (dbnm) {
-            case "ERP_THEMOONN":
+            case "ERP_THEMOON":
                 return CA609Mapper.GetQcqty(parm);
             default:
                 return null;
@@ -146,7 +147,7 @@ public class CA609Service {
     public int UpdateQcflag(CA609Dto parm){
         String dbnm = parm.getDbnm();
         switch (dbnm){
-            case "ERP_THEMOONN":
+            case "ERP_THEMOON":
                 return CA609Mapper.UpdateQcflag(parm);
             default:
                 return 0;
