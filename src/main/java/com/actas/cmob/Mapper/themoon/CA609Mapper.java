@@ -1,6 +1,7 @@
-package com.actas.cmob.Mapper.CA609;
+package com.actas.cmob.Mapper.themoon;
 
-import com.actas.cmob.DTO.CA609.*;
+import com.actas.cmob.DTO.Themoon.CA609Dto;
+import com.actas.cmob.DTO.Themoon.CA609PopDto;
 import com.actas.cmob.DTO.UserFormDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
