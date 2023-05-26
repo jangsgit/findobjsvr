@@ -112,12 +112,15 @@ public class CA609Dto {
     private String wqtyList;
     private String qcdateList;
     private String qcnumList;
+    private String qcseqList;
     private String wqty;
     private String buton;
     private String comcd;
     private String qcdv;
+    private String qcseq;
 
     private int balqty;
+
 
 
 }

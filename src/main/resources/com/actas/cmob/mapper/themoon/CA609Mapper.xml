@@ -65,8 +65,8 @@
     </insert>
 
     <select id="GetNowList" parameterType="com.actas.cmob.DTO.Themoon.CA609Dto" resultType="com.actas.cmob.DTO.Themoon.CA609Dto">
-        SELECT TB_CA623.custcd, TB_CA623.spjangcd, ISNULL(TB_CA623.qcdate, '19991231') as qcdate, ISNULL(TB_CA623.qcnum, '0000') as qcnum, TB_CA623.cltcd, TB_XCLIENT.cltnm, TB_CA624.pcode, TB_CA624.pname, TB_CA624.psize, TB_CA624.punit,
-        TB_CA624.qty, TB_CA609.baldate as baldate, TB_CA609.balnum as balnum, TB_CA609.balseq as balseq
+        SELECT TB_CA623.custcd, TB_CA623.spjangcd, ISNULL(TB_CA623.qcdate, '') as qcdate, ISNULL(TB_CA623.qcnum, '') as qcnum, TB_CA624.qcseq as qcseq, TB_CA623.cltcd, TB_XCLIENT.cltnm, TB_CA624.pcode, TB_CA624.pname, TB_CA624.psize, TB_CA624.punit,
+        TB_CA624.qty, TB_CA609.baldate as baldate, TB_CA609.balnum as balnum, TB_CA609.balseq as balseq, qcseq
         FROM TB_CA623 WITH(NOLOCK), TB_CA624 WITH(NOLOCK), TB_XCLIENT WITH(NOLOCK), TB_CA609 WITH(NOLOCK)
         WHERE (TB_CA623.custcd = TB_CA624.custcd) AND (TB_CA623.spjangcd = TB_CA624.spjangcd) AND (TB_CA623.qcdate = TB_CA624.qcdate)
         AND (TB_CA623.qcnum = TB_CA624.qcnum) AND (TB_CA623.custcd = TB_XCLIENT.custcd) AND (TB_CA623.cltcd = TB_XCLIENT.cltcd)
@@ -100,11 +100,11 @@
     </update>
 
     <delete id="DeleteBalHead" parameterType="com.actas.cmob.DTO.Themoon.CA609Dto">
-        DELETE FROM TB_CA623 WHERE custcd = #{custcd} AND spjangcd = #{spjangcd} AND qcdate = #{qcdate} AND qcnum = #{qcnum}
+        DELETE FROM TB_CA623 WHERE custcd = #{custcd} AND spjangcd = #{spjangcd} AND qcdate = #{qcdate} AND qcnum = #{qcnum} AND qcnum not in (select qcnum from TB_CA624 where qcnum = #{qcnum} and qcdate = #{qcdate})
     </delete>
 
     <delete id="DeleteBalBody" parameterType="com.actas.cmob.DTO.Themoon.CA609Dto">
-        DELETE FROM TB_CA624 WHERE custcd = #{custcd} AND spjangcd = #{spjangcd} AND qcdate = #{qcdate} AND qcnum = #{qcnum}
+        DELETE FROM TB_CA624 WHERE custcd = #{custcd} AND spjangcd = #{spjangcd} AND qcdate = #{qcdate} AND qcnum = #{qcnum} AND qcseq = #{qcseq}
     </delete>
 
     <select id="GetCntData" parameterType="com.actas.cmob.DTO.Themoon.CA609Dto" resultType="com.actas.cmob.DTO.Themoon.CA609Dto">
@@ -117,7 +117,7 @@
 
     <select id="GetQcqty" parameterType="com.actas.cmob.DTO.Themoon.CA609Dto" resultType="com.actas.cmob.DTO.Themoon.CA609Dto">
         SELECT ISNULL(qty, 0) as balqty, ISNULL(qcqty, 0) as qcqty
-        FROM TB_CA609 WITH(NOLOCK) WHERE custcd = #{custcd} AND spjangcd = #{spjangcd} AND baldate = #{baldate} AND balnum = #{balnum} and balseq = #{balseq}
+        FROM TB_CA609 WITH(NOLOCK) WHERE custcd = 'THEMOON' AND spjangcd = 'ZZ' AND baldate = #{baldate} AND balnum = #{balnum} and balseq = #{balseq}
     </select>
 
     <update id="UpdateQcflag" parameterType="com.actas.cmob.DTO.Themoon.CA609Dto">
@@ -135,6 +135,9 @@
 
     <select id="select_tb_CA623" parameterType="com.actas.cmob.DTO.Themoon.CA609PopDto" resultType="java.lang.String">
         select isnull(max(qcnum), '0000') from tb_ca623 with(nolock) where custcd = 'THEMOON' and qcdate = #{gs_today}
+    </select>
+    <select id="select_tb_CA624" parameterType="com.actas.cmob.DTO.Themoon.CA609PopDto" resultType="java.lang.String">
+        select isnull(max(qcseq), '000') from tb_ca624 with(nolock) where custcd = 'THEMOON' and qcnum = #{as_qcnum} and qcdate = #{gs_today}
     </select>
 
     <insert id="Insert_TB_CA623" parameterType="com.actas.cmob.DTO.Themoon.CA609PopDto">
@@ -164,7 +167,7 @@
     </insert>
 
     <select id="Maxseq" parameterType="string" resultType="java.lang.String">
-        select max(qcseq) from TB_CA624 where qcdate = #{gs_today}
+        select max(qcnum) from TB_CA624 where qcdate = #{gs_today}
     </select>
 
 
@@ -179,6 +182,10 @@
         SUM(CASE ibgflag WHEN '1' THEN 1 WHEN '0' THEN 1 ELSE 0 END) as ll_cnt3,
         SUM(CASE ibgflag WHEN '2' THEN 1 WHEN '9' THEN 1 ELSE 0 END) as ll_cnt4
         FROM TB_CA609 WITH(NOLOCK) WHERE custcd = 'THEMOON' AND spjangcd = 'ZZ' AND baldate = #{as_baldate} AND balnum = #{as_balnum}
+    </select>
+
+    <select id="GetQcnum" parameterType="com.actas.cmob.DTO.Themoon.CA609PopDto" resultType="java.lang.String">
+        SELECT qcnum from tb_ca623 where baldate = #{as_baldate} and balnum = #{as_balnum}
     </select>
 
 </mapper>

@@ -240,4 +240,12 @@ public class CA609Service {
 
     }
 
+    public String select_tb_CA624(CA609PopDto parm) {
+
+        return CA609Mapper.select_tb_CA624(parm);
+    }
+
+    public String GetQcnum(CA609PopDto parm) {
+        return CA609Mapper.GetQcnum(parm);
+    }
 }

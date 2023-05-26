@@ -154,7 +154,7 @@ public class AppCA609Controller {
             popDto.setAs_baldate(as_baldate.get(i));
             popDto.setAs_balnum(as_balnum.get(i));
             popDto.setAs_balseq(as_balseq.get(i));
-            // authService.Update_TB_CA609(popDto);
+            //authService.Update_TB_CA609(popDto);
             list = authService.select_tb_ca608_head(popDto);
 
 
@@ -206,44 +206,51 @@ public class AppCA609Controller {
 
         for(int i = 0; i < as_cltcd.size(); i++){
 
-            popDto.setGs_today(gsToday);
-            result =  authService.select_tb_CA623(popDto);
+            if(authService.GetQcnum(popDto) == null) {
 
-            int ll_result = 0;
 
-            if(result == "0000"){
-                result = "0001";
+                popDto.setGs_today(gsToday);
+                result = authService.select_tb_CA623(popDto);
+
+                int ll_result = 0;
+
+                if (result == "0000") {
+                    result = "0001";
+                } else {
+                    ll_result = Integer.parseInt(result);
+                    ll_result++;
+                    result = String.format("%04d", ll_result);
+
+                }
+
+                popDto.setGs_today(gsToday);
+                popDto.setCltcd(as_cltcd.get(i));
+                popDto.setGs_perid(gsPerid);
+                popDto.setAs_qcnum(result);
+                popDto.setGs_divicd(as_divicd.get(i));
+                popDto.setAs_store(as_store.get(i));
+                popDto.setAs_ischdate(as_ischdate.get(i));
+                popDto.setAs_cltcd(as_cltcd.get(i));
+                popDto.setAs_baldate(as_baldate.get(i));
+                popDto.setAs_balnum(as_balnum.get(i));
+                popDto.setAs_comcd(as_comcd.get(i));
+
+
+                log.info(popDto.getGs_today() + " Gstoday");
+                log.info(popDto.getCltcd() + " Cltcd");
+                log.info(popDto.getGs_perid() + " gs_perid");
+                log.info(popDto.getGs_divicd() + " gs_divicd");
+                log.info(popDto.getAs_store() + " store");
+                log.info(popDto.getAs_ischdate() + " ischdate");
+                log.info(popDto.getAs_baldate() + " baldate");
+                log.info(popDto.getAs_balnum() + " balnum");
+                log.info(popDto.getAs_comcd() + " comcd");
+                log.info(popDto.getAs_qcnum() + " qcnum");
+
+                authService.Insert_TB_CA623(popDto);
             }else{
-                ll_result = Integer.parseInt(result);
-                ll_result++;
-                result = String.format("%04d", ll_result);
-
+                popDto.setAs_qcnum(authService.GetQcnum(popDto));
             }
-
-            popDto.setGs_today(gsToday);
-            popDto.setCltcd(as_cltcd.get(i));
-            popDto.setGs_perid(gsPerid);
-            popDto.setAs_qcnum(result);
-            popDto.setGs_divicd(as_divicd.get(i));
-            popDto.setAs_store(as_store.get(i));
-            popDto.setAs_ischdate(as_ischdate.get(i));
-            popDto.setAs_baldate(as_baldate.get(i));
-            popDto.setAs_balnum(as_balnum.get(i));
-            popDto.setAs_comcd(as_comcd.get(i));
-
-
-            log.info(popDto.getGs_today() + " Gstoday");
-            log.info(popDto.getCltcd()    +  " Cltcd");
-            log.info(popDto.getGs_perid() +  " gs_perid");
-            log.info(popDto.getGs_divicd() + " gs_divicd");
-            log.info(popDto.getAs_store() + " store");
-            log.info(popDto.getAs_ischdate() + " ischdate");
-            log.info(popDto.getAs_baldate() + " baldate");
-            log.info(popDto.getAs_balnum() + " balnum");
-            log.info(popDto.getAs_comcd() + " comcd");
-            log.info(popDto.getAs_qcnum() + " qcnum");
-
-            authService.Insert_TB_CA623(popDto);
         }
 
 
@@ -252,16 +259,24 @@ public class AppCA609Controller {
         for(int i=0; i < as_pcode.size(); i++){
 
             popDto.setGs_today(gsToday);
-            result3 =  authService.select_tb_CA623(popDto);
+            result3 =  authService.select_tb_CA624(popDto);
 
             int ll_result = 0;
 
-            if(result3 == "0000"){
-                result3 = "0001";
+            if(result3.equals("000")){
+                log.info(popDto.getAs_qcnum());
+                log.info(popDto.getGs_today());
+                result3 = "001";
+                log.info("test------------------------");
+                log.info("test------------------------");
             }else{
-                ll_result = Integer.parseInt(result);
+                log.info("test------------------------");
+                log.info("test------------------------");
+                ll_result = Integer.parseInt(result3);
+                log.info(result3);
                 ll_result++;
-                result3 = String.format("%04d", ll_result);
+                result3 = String.format("%03d", ll_result);
+                log.info("최종값:"+result3);
 
             }
 
@@ -271,8 +286,8 @@ public class AppCA609Controller {
             popDto.setAs_cltcd(as_cltcd.get(i));
             result2 = authService.select_DF_DANGA(popDto);
             popDto.setAe_uamt(result2);
-            popDto.setAs_qcnum(result3);
-            popDto.setAs_qcseq(CountSeq(gsToday));
+            popDto.setAs_qcnum(authService.GetQcnum(popDto));
+            popDto.setAs_qcseq(result3);
             popDto.setAs_pname(as_pname.get(i));
             popDto.setAs_psize(as_psize.get(i));
             popDto.setAs_punit(as_punit.get(i));
@@ -466,7 +481,7 @@ public class AppCA609Controller {
             headers = ("content-type=multipart/*"),
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String DeleteQcData(@RequestParam Map<String, String> param,
-            @RequestParam Map<String, List<String>> paramList
+                               @RequestParam Map<String, List<String>> paramList
             , Model model
             , HttpServletRequest request) throws Exception{
         System.out.println("delqc 진입------------------------");
@@ -490,7 +505,6 @@ public class AppCA609Controller {
                     break;
                 case "balseq":
                     ca609Dto.setBalseqList(values.toString());
-                    System.out.println(ca609Dto.getBalseqList());
                     break;
                 case "wqty":
                     ca609Dto.setWqtyList(values.toString());
@@ -501,6 +515,8 @@ public class AppCA609Controller {
                 case "qcnum":
                     ca609Dto.setQcnumList(values.toString());
                     break;
+                case "qcseq":
+                    ca609Dto.setQcseqList(values.toString());
                 default:
                     break;
             }
@@ -513,6 +529,7 @@ public class AppCA609Controller {
         List<String> wqtyList = Arrays.asList(ca609Dto.getWqtyList().split(","));
         List<String> qcdateList = Arrays.asList(ca609Dto.getQcdateList().split(","));
         List<String> qcnumList = Arrays.asList(ca609Dto.getQcnumList().split(","));
+        List<String> qcseqList = Arrays.asList(ca609Dto.getQcseqList().split(","));
 
         for(int i=0; i<baldateList.size(); i++){
             ca609Dto.setBaldate(baldateList.get(i));
@@ -521,15 +538,15 @@ public class AppCA609Controller {
             ca609Dto.setWqty(wqtyList.get(i));
             ca609Dto.setQcdate(qcdateList.get(i));
             ca609Dto.setQcnum(qcnumList.get(i));
-//            System.out.println(ca609Dto.getBaldate());
-//            System.out.println(ca609Dto.getBalnum());
-//            System.out.println(ca609Dto.getBalseq());
+            ca609Dto.setQcseq(qcseqList.get(i));
+            System.out.println(ca609Dto.getBaldate());
+            System.out.println(ca609Dto.getBalnum());
+            System.out.println(ca609Dto.getBalseq());
 //            System.out.println(ca609Dto.getWqty());
 //            System.out.println(ca609Dto.getQcdate());
 //            System.out.println(ca609Dto.getQcnum());
 
             authCA609Dto = authService.GetQcqty(ca609Dto);
-            System.out.println(authCA609Dto.toString());
 
             if(authCA609Dto.getBalqty() == authCA609Dto.getQcqty()){
                 ca609Dto.setQcflag("0");
@@ -598,25 +615,24 @@ public class AppCA609Controller {
         return formatter.format(date);
     }
 
-    public String CountSeq(String compdate){
+    public String CountNum(String compdate){
 
 
         String ls_compnum = authService.Maxseq(compdate);
         int ll_compnum = 0;
         if(ls_compnum == null){
-            ls_compnum = "001";
+            ls_compnum = "0001";
         }else{
             ll_compnum = Integer.parseInt(ls_compnum);
             log.info(ll_compnum);
-            if(ll_compnum > 8) {
-                ls_compnum = "0" + Integer.toString(ll_compnum + 01);
-            }else{
+            if(ll_compnum > 9) {
                 ls_compnum = "00" + Integer.toString(ll_compnum + 01);
+            }else{
+                ls_compnum = "000" + Integer.toString(ll_compnum + 01);
             }
         }
         return ls_compnum;
     }
-
 
 
 

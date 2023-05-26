@@ -49,4 +49,8 @@ public interface CA609Mapper {
 
     public int Update_TB_CA609(CA609PopDto parm);
 
+    public String select_tb_CA624(CA609PopDto parm);
+
+    public String GetQcnum(CA609PopDto parm);
+
 }
