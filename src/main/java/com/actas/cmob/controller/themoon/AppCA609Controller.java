@@ -158,15 +158,15 @@ public class AppCA609Controller {
             list = authService.select_tb_ca608_head(popDto);
 
 
-            log.info(list.get(0).getLl_cnt());
-            log.info(list.get(0).getLl_cnt1());
-            log.info(list.get(0).getLl_cnt2());
-            log.info(list.get(0).getLl_cnt3());
-            log.info(list.get(0).getLl_cnt4());
-            log.info(as_wqcqty.get(i) + " : wqcqty");
-            log.info(as_baldate.get(i) + " : baldate");
-            log.info(as_balnum.get(i) + " : balnum");
-            log.info(as_balseq.get(i) + " : balseq");
+//            log.info(list.get(0).getLl_cnt());
+//            log.info(list.get(0).getLl_cnt1());
+//            log.info(list.get(0).getLl_cnt2());
+//            log.info(list.get(0).getLl_cnt3());
+//            log.info(list.get(0).getLl_cnt4());
+//            log.info(as_wqcqty.get(i) + " : wqcqty");
+//            log.info(as_baldate.get(i) + " : baldate");
+//            log.info(as_balnum.get(i) + " : balnum");
+//            log.info(as_balseq.get(i) + " : balseq");
 
 
 
@@ -236,16 +236,16 @@ public class AppCA609Controller {
                 popDto.setAs_comcd(as_comcd.get(i));
 
 
-                log.info(popDto.getGs_today() + " Gstoday");
-                log.info(popDto.getCltcd() + " Cltcd");
-                log.info(popDto.getGs_perid() + " gs_perid");
-                log.info(popDto.getGs_divicd() + " gs_divicd");
-                log.info(popDto.getAs_store() + " store");
-                log.info(popDto.getAs_ischdate() + " ischdate");
-                log.info(popDto.getAs_baldate() + " baldate");
-                log.info(popDto.getAs_balnum() + " balnum");
-                log.info(popDto.getAs_comcd() + " comcd");
-                log.info(popDto.getAs_qcnum() + " qcnum");
+//                log.info(popDto.getGs_today() + " Gstoday");
+//                log.info(popDto.getCltcd() + " Cltcd");
+//                log.info(popDto.getGs_perid() + " gs_perid");
+//                log.info(popDto.getGs_divicd() + " gs_divicd");
+//                log.info(popDto.getAs_store() + " store");
+//                log.info(popDto.getAs_ischdate() + " ischdate");
+//                log.info(popDto.getAs_baldate() + " baldate");
+//                log.info(popDto.getAs_balnum() + " balnum");
+//                log.info(popDto.getAs_comcd() + " comcd");
+//                log.info(popDto.getAs_qcnum() + " qcnum");
 
                 authService.Insert_TB_CA623(popDto);
             }else{
@@ -264,19 +264,11 @@ public class AppCA609Controller {
             int ll_result = 0;
 
             if(result3.equals("000")){
-                log.info(popDto.getAs_qcnum());
-                log.info(popDto.getGs_today());
                 result3 = "001";
-                log.info("test------------------------");
-                log.info("test------------------------");
             }else{
-                log.info("test------------------------");
-                log.info("test------------------------");
                 ll_result = Integer.parseInt(result3);
-                log.info(result3);
                 ll_result++;
                 result3 = String.format("%03d", ll_result);
-                log.info("최종값:"+result3);
 
             }
 
@@ -300,21 +292,21 @@ public class AppCA609Controller {
             popDto.setGs_perid(gsPerid);
 
 
-            log.info(as_pcode.get(i) + " : pcode");
-            log.info(as_cltcd.get(i) + " : cltcd");
-            log.info(popDto.getAe_uamt() + " : uamt");
-            log.info(popDto.getAs_qcnum() + " : qcnum");
-            log.info(popDto.getAs_qcseq() + " : qcseq");
-            log.info(as_pname.get(i)       + ": pname");
-            log.info(as_psize.get(i)       + ": psize");
-            log.info(as_punit.get(i)       + ": punit");
-            log.info(ae_qty.get(i)         + ": qty");
-            log.info(as_qcdv.get(i)        + ": qcdv");
-            log.info(as_balseq.get(i)      + ": balseq");
-            log.info(as_baldate.get(i)     + ": baldate");
-            log.info(as_balnum.get(i)      + ": balnum");
-            log.info(as_ischdate.get(i)    + ": ischdate");
-            log.info(popDto.getGs_perid()  + ": perid");
+//            log.info(as_pcode.get(i) + " : pcode");
+//            log.info(as_cltcd.get(i) + " : cltcd");
+//            log.info(popDto.getAe_uamt() + " : uamt");
+//            log.info(popDto.getAs_qcnum() + " : qcnum");
+//            log.info(popDto.getAs_qcseq() + " : qcseq");
+//            log.info(as_pname.get(i)       + ": pname");
+//            log.info(as_psize.get(i)       + ": psize");
+//            log.info(as_punit.get(i)       + ": punit");
+//            log.info(ae_qty.get(i)         + ": qty");
+//            log.info(as_qcdv.get(i)        + ": qcdv");
+//            log.info(as_balseq.get(i)      + ": balseq");
+//            log.info(as_baldate.get(i)     + ": baldate");
+//            log.info(as_balnum.get(i)      + ": balnum");
+//            log.info(as_ischdate.get(i)    + ": ischdate");
+//            log.info(popDto.getGs_perid()  + ": perid");
 
             authService.Insert_TB_CA624(popDto);
 
