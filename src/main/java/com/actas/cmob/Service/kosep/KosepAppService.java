@@ -113,7 +113,7 @@ public class KosepAppService {
         int queryResult = 1;
 
 
-        queryResult = TheMoonDBMapper.InsertDA036(parm);
+        queryResult = kosepMapper.InsertDA036(parm);
         if (queryResult < 1) {
             queryResult = 0;
         }
@@ -122,7 +122,7 @@ public class KosepAppService {
 
     public int InsertDa037(KosepDa037Dto parm) {
         int queryResult = 1;
-        queryResult = TheMoonDBMapper.InsertDa037(parm);
+        queryResult = kosepMapper.InsertDa037(parm);
         if (queryResult < 1) {
             queryResult = 0;
         }
@@ -130,7 +130,7 @@ public class KosepAppService {
     }
     public int InsertDa037H(KosepDa037HDto parm) {
         int queryResult = 1;
-        queryResult = TheMoonDBMapper.InsertDa037H(parm);
+        queryResult = kosepMapper.InsertDa037H(parm);
         if (queryResult < 1) {
             queryResult = 0;
         }
@@ -138,7 +138,7 @@ public class KosepAppService {
     }
     public int UpdateTBda035(KosepPopDto parm) {
         int queryResult = 1;
-        queryResult = TheMoonDBMapper.UpdateTBda035(parm);
+        queryResult = kosepMapper.UpdateTBda035(parm);
         if (queryResult < 1) {
             queryResult = 0;
         }
@@ -146,7 +146,7 @@ public class KosepAppService {
     }
     public int UpdateDA006PANNEL(KosepPopDto parm) {
         int queryResult = 1;
-        queryResult = TheMoonDBMapper.UpdateDA006PANNEL(parm);
+        queryResult = kosepMapper.UpdateDA006PANNEL(parm);
         if (queryResult < 1) {
             queryResult = 0;
         }
@@ -154,7 +154,7 @@ public class KosepAppService {
     }
     public int UpdateDA006WINGBADY(KosepPopDto parm) {
         int queryResult = 1;
-        queryResult = TheMoonDBMapper.UpdateDA006WINGBADY(parm);
+        queryResult = kosepMapper.UpdateDA006WINGBADY(parm);
         if (queryResult < 1) {
             queryResult = 0;
         }
@@ -164,7 +164,7 @@ public class KosepAppService {
 
     public int DeleteDA036(KosepPopDto parm) {
         int queryResult = 1;
-        queryResult = TheMoonDBMapper.DeleteDA036(parm);
+        queryResult = kosepMapper.DeleteDA036(parm);
         if (queryResult < 1) {
             queryResult = 0;
         }
@@ -172,7 +172,7 @@ public class KosepAppService {
     }
     public int DeleteDA037(KosepPopDto parm) {
         int queryResult = 1;
-        queryResult = TheMoonDBMapper.DeleteDA037(parm);
+        queryResult = kosepMapper.DeleteDA037(parm);
         if (queryResult < 1) {
             queryResult = 0;
         }
@@ -180,7 +180,7 @@ public class KosepAppService {
     }
     public int DeleteDA037H(KosepPopDto parm) {
         int queryResult = 1;
-        queryResult = TheMoonDBMapper.DeleteDA037H(parm);
+        queryResult = kosepMapper.DeleteDA037H(parm);
         if (queryResult < 1) {
             queryResult = 0;
         }
@@ -196,7 +196,7 @@ public class KosepAppService {
     }*/
     public int DeleteDA006PAN(KosepPopDto parm) {
         int queryResult = 1;
-        queryResult = TheMoonDBMapper.DeleteDA006PAN(parm);
+        queryResult = kosepMapper.DeleteDA006PAN(parm);
         if (queryResult < 1) {
             queryResult = 0;
         }
@@ -204,7 +204,7 @@ public class KosepAppService {
     }
     public int DeleteDA006WIN(KosepPopDto parm) {
         int queryResult = 1;
-        queryResult = TheMoonDBMapper.DeleteDA006WIN(parm);
+        queryResult = kosepMapper.DeleteDA006WIN(parm);
         if (queryResult < 1) {
             queryResult = 0;
         }
