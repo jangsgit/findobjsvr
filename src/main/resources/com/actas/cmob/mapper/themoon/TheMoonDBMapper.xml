@@ -505,10 +505,23 @@
         insert into tb_ca630 (custcd, spjangcd, store, sildate, pcode, lotno, jaeqty, jaeuamt, jaeamt, silqty, siluamt, silamt, banflag, banyn, acc_flag, acc_spdate,
                               acc_spnum, sildv, remark, indate, inperid) values
                               (
-                               'THEMOON', 'ZZ', 'P01', #{gs_today}, #{pcode}, #{code88}, #{jaeqty}, 0, 0, #{silqty}, 0, 0, '0', '0', '0', '', '', '', '',
+                               'THEMOON', 'ZZ', 'P01', #{gs_today}, #{pcode}, #{lotno}, #{jaeqty}, 0, 0, #{silqty}, 0, 0, '0', '0', '0', '', '', '', '',
                                #{gs_today}, #{gs_perid}
                               )
 
     </insert>
+
+
+    <select id="insert_check" parameterType="com.actas.cmob.DTO.Themoon.PopDto" resultType="com.actas.cmob.DTO.Themoon.ThemoonListDto2">
+        select sildate, pcode, lotno, indate from tb_ca630 where pcode=#{pcode} and sildate = #{gs_today} and lotno = #{lotno}
+
+    </select>
+
+    <update id="Update_tb_ca630Int" parameterType="com.actas.cmob.DTO.Themoon.PopDto">
+        UPDATE tb_ca630 SET custcd = 'THEMOON', spjangcd = 'ZZ', store = 'P01',sildate = #{gs_today}, pcode = #{pcode}, lotno = #{lotno}, jaeqty = #{jaeqty},
+                            jaeuamt = '0', jaeamt = '0', silqty = #{silqty}, siluamt = 0, silamt = 0, banflag = '0', banyn = '0', acc_flag = '0', acc_spdate = '',
+                            acc_spnum = '', sildv = '', remark = '', indate = #{gs_today}, inperid = #{gs_perid}  where sildate = #{gs_today} and pcode = #{pcode} and
+            lotno = #{lotno}
+    </update>
 
 </mapper>

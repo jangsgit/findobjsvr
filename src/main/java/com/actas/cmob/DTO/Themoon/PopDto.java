@@ -26,6 +26,9 @@ public class PopDto {
     private String gs_perid;
     private String jaeqty;
     private String silqty;
+    private String sildate;
+    private String indate;
+
 
 
 }

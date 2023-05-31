@@ -34,6 +34,8 @@ public class Appthemoon01Controller {
 
     PopDto popDto2 = new PopDto();
 
+
+
     PopDto popDto3 = new PopDto();
 
     PopDto popDto4 = new PopDto();
@@ -43,6 +45,7 @@ public class Appthemoon01Controller {
     PopDto popDto6 = new PopDto();
 
     List<ThemoonListDto> list01Dto = new ArrayList<>();
+
 
     List<ThemoonListDto2> list02Dto = new ArrayList<>();
 
@@ -501,20 +504,36 @@ public class Appthemoon01Controller {
         List<String> pcodeList = (List<String>) data.get("pcodeList");
         List<String> jaeqtyList = (List<String>) data.get("jaeqtyList");
         List<String> silqty = (List<String>) data.get("silqty");
+        List<String> lotno = (List<String>) data.get("lotnoList");
 
 
 
 
-        for(int i=0; i< pcodeList.size(); i++){
+        for(int i=0; i < pcodeList.size(); i++){
 
             popDto.setGs_today(close_date);
             popDto.setGs_perid(closePerid);
             popDto.setPcode(pcodeList.get(i));
             popDto.setJaeqty(jaeqtyList.get(i));
             popDto.setSilqty(silqty.get(i));
+            popDto.setLotno(lotno.get(i));
+
+            log.info(pcodeList.size() + " 사이즈");
+
+            List<ThemoonListDto2> list01Dto = new ArrayList<>();
+
+            list01Dto = themoonAppService.insert_check(popDto);
 
 
-            themoonAppService.insert_tb_ca630(popDto);
+            if(list01Dto.isEmpty()){
+                themoonAppService.insert_tb_ca630(popDto);
+                log.info("1");
+            }else{
+                themoonAppService.Update_tb_ca630Int(popDto);
+                log.info("2");
+            }
+
+
         }
 
         return "success";

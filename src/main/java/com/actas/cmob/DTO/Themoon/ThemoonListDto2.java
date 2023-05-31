@@ -8,6 +8,8 @@ import lombok.Setter;
 public class ThemoonListDto2 {
 
     private String wono;
+    private String sildate;
+    private String indate;
     private String lotno;
     private String plan_no;
     private String cltcd;

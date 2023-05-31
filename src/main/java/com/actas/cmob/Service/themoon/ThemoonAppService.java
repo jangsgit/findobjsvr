@@ -294,4 +294,26 @@ public class ThemoonAppService {
         }
         return (queryResult > 0);
     }
+
+
+    public boolean Update_tb_ca630Int(PopDto parm){
+
+        int queryResult = 1;
+
+        queryResult  = TheMoonDBMapper.Update_tb_ca630Int(parm);
+        if(queryResult < 1){
+            queryResult = 0;
+        }
+        return (queryResult > 0);
+    }
+
+
+
+    public List<ThemoonListDto2> insert_check(PopDto parm){
+
+
+                return TheMoonDBMapper.insert_check(parm);
+
+
+    }
 }

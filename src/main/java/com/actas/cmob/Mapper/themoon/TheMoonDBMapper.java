@@ -98,6 +98,13 @@ public interface TheMoonDBMapper {
 
 
 
+    public List<ThemoonListDto2> insert_check(PopDto parm);
+
+    public int Update_tb_ca630Int(PopDto parm);
+
+
+
+
 
 
 
