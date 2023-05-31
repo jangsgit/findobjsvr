@@ -152,7 +152,7 @@ public class AppCA609Controller {
 
 
 
-        for(int i = 0; i < as_cltcd.size(); i++){
+        for(int i = 0; i < 1; i++){
 
 
 
@@ -221,7 +221,7 @@ public class AppCA609Controller {
             popDto.setAs_cltcd(as_cltcd.get(i));
             result2 = authService.select_DF_DANGA(popDto);
             popDto.setAe_uamt(result2);
-            popDto.setAs_qcnum(CountNum(gsToday));
+//            popDto.setAs_qcnum(CountNum(gsToday));
             popDto.setAs_qcseq(result3);
             popDto.setAs_pname(as_pname.get(i));
             popDto.setAs_psize(as_psize.get(i));
@@ -280,11 +280,11 @@ public class AppCA609Controller {
 
 
 
-            if(list.get(i).getLl_cnt() > list.get(i).getLl_cnt2()) {
-                if (list.get(i).getLl_cnt1() > 0) {
+            if(list.get(0).getLl_cnt() > list.get(0).getLl_cnt2()) {
+                if (list.get(0).getLl_cnt1() > 0) {
                     ls_qcflag2 = "1";
                 } else {
-                    if (list.get(i).getLl_cnt2() > 0) {
+                    if (list.get(0).getLl_cnt2() > 0) {
                         ls_qcflag2 = "1";
                     } else {
                         ls_qcflag2 = "0";
@@ -294,11 +294,11 @@ public class AppCA609Controller {
                 ls_qcflag2 = "2";
             }
 
-            if(list.get(i).getLl_cnt() > list.get(i).getLl_cnt4()){
-                if(list.get(i).getLl_cnt3() > 0){
+            if(list.get(0).getLl_cnt() > list.get(0).getLl_cnt4()){
+                if(list.get(0).getLl_cnt3() > 0){
                     ls_ibgflag2 = "1";
                 }else{
-                    if(list.get(i).getLl_cnt4() > 0){
+                    if(list.get(0).getLl_cnt4() > 0){
                         ls_ibgflag2 = "1";
                     }else{
                         ls_ibgflag2 = "0";
