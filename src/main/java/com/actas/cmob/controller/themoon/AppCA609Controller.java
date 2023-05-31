@@ -87,6 +87,7 @@ public class AppCA609Controller {
             switch (key){
                 case "dbnm":
                     ca609Dto.setDbnm(values.toString());
+                    log.info(ca609Dto.getDbnm());
                     break;
                 case "custcd":
                     ca609Dto.setCustcd(values.toString());
@@ -96,6 +97,7 @@ public class AppCA609Controller {
                     break;
                 case "pcode":
                     ca609Dto.setPcode(values.toString());
+                    log.info(ca609Dto.getPcode());
                     break;
                 default:
                     break;
@@ -110,7 +112,7 @@ public class AppCA609Controller {
         }
         list = authService.GetQtyInfo(ca609Dto);
 
-        log.info(list.toString());
+        log.info(list);
 
         return list;
     }
@@ -148,92 +150,37 @@ public class AppCA609Controller {
 
 
 
-        for(int i=0; i< as_wqcqty.size(); i++){
 
-            popDto.setWmqty(as_wqcqty.get(i));
-            popDto.setAs_baldate(as_baldate.get(i));
-            popDto.setAs_balnum(as_balnum.get(i));
-            popDto.setAs_balseq(as_balseq.get(i));
-            //authService.Update_TB_CA609(popDto);
-            list = authService.select_tb_ca608_head(popDto);
-
-
-//            log.info(list.get(0).getLl_cnt());
-//            log.info(list.get(0).getLl_cnt1());
-//            log.info(list.get(0).getLl_cnt2());
-//            log.info(list.get(0).getLl_cnt3());
-//            log.info(list.get(0).getLl_cnt4());
-//            log.info(as_wqcqty.get(i) + " : wqcqty");
-//            log.info(as_baldate.get(i) + " : baldate");
-//            log.info(as_balnum.get(i) + " : balnum");
-//            log.info(as_balseq.get(i) + " : balseq");
-
-
-
-
-            if(list.get(0).getLl_cnt() > list.get(0).getLl_cnt2())
-                if(list.get(0).getLl_cnt1() > 0) {
-                    ls_qcflag2 = "1";
-                }else{
-                    if(list.get(0).getLl_cnt2() > 0){
-                        ls_qcflag2 = "1";
-                    }else{
-                        ls_qcflag2 = "0";
-                    }
-                }
-            if(list.get(0).getLl_cnt() > list.get(0).getLl_cnt4()){
-                if(list.get(0).getLl_cnt3() > 0){
-                    ls_ibgflag2 = "1";
-                }else{
-                    if(list.get(0).getLl_cnt4() > 0){
-                        ls_ibgflag2 = "1";
-                    }else{
-                        ls_ibgflag2 = "0";
-                    }
-                }
-
-            }
-
-            popDto.setLs_qcflag(ls_qcflag2);
-            popDto.setLs_ibgflag(ls_ibgflag2);
-
-            log.info(popDto.getLs_qcflag() + " : qcflg");
-            log.info(popDto.getLs_ibgflag() + " : ibgflg");
-
-
-            authService.Update_TB_CA608(popDto);
-        }
 
         for(int i = 0; i < as_cltcd.size(); i++){
 
-            if(authService.GetQcnum(popDto) == null) {
 
 
-                popDto.setGs_today(gsToday);
-                result = authService.select_tb_CA623(popDto);
+            popDto.setGs_today(gsToday);
+            result = authService.select_tb_CA623(popDto);
 
-                int ll_result = 0;
+            int ll_result = 0;
 
-                if (result == "0000") {
-                    result = "0001";
-                } else {
-                    ll_result = Integer.parseInt(result);
-                    ll_result++;
-                    result = String.format("%04d", ll_result);
+            if (result == "0000") {
+                result = "0001";
+            } else {
+                ll_result = Integer.parseInt(result);
+                ll_result++;
+                result = String.format("%04d", ll_result);
 
-                }
+            }
 
-                popDto.setGs_today(gsToday);
-                popDto.setCltcd(as_cltcd.get(i));
-                popDto.setGs_perid(gsPerid);
-                popDto.setAs_qcnum(result);
-                popDto.setGs_divicd(as_divicd.get(i));
-                popDto.setAs_store(as_store.get(i));
-                popDto.setAs_ischdate(as_ischdate.get(i));
-                popDto.setAs_cltcd(as_cltcd.get(i));
-                popDto.setAs_baldate(as_baldate.get(i));
-                popDto.setAs_balnum(as_balnum.get(i));
-                popDto.setAs_comcd(as_comcd.get(i));
+            popDto.setGs_today(gsToday);
+            popDto.setCltcd(as_cltcd.get(i));
+            popDto.setGs_perid(gsPerid);
+            popDto.setAs_qcnum(result);
+            popDto.setGs_divicd(as_divicd.get(i));
+            popDto.setAs_store(as_store.get(i));
+            popDto.setAs_ischdate(as_ischdate.get(i));
+            popDto.setAs_cltcd(as_cltcd.get(i));
+            popDto.setAs_baldate(as_baldate.get(i));
+            popDto.setAs_balnum(as_balnum.get(i));
+            popDto.setAs_comcd(as_comcd.get(i));
 
 
 //                log.info(popDto.getGs_today() + " Gstoday");
@@ -247,10 +194,7 @@ public class AppCA609Controller {
 //                log.info(popDto.getAs_comcd() + " comcd");
 //                log.info(popDto.getAs_qcnum() + " qcnum");
 
-                authService.Insert_TB_CA623(popDto);
-            }else{
-                popDto.setAs_qcnum(authService.GetQcnum(popDto));
-            }
+            authService.Insert_TB_CA623(popDto);
         }
 
 
@@ -269,7 +213,6 @@ public class AppCA609Controller {
                 ll_result = Integer.parseInt(result3);
                 ll_result++;
                 result3 = String.format("%03d", ll_result);
-
             }
 
 
@@ -278,7 +221,7 @@ public class AppCA609Controller {
             popDto.setAs_cltcd(as_cltcd.get(i));
             result2 = authService.select_DF_DANGA(popDto);
             popDto.setAe_uamt(result2);
-            popDto.setAs_qcnum(authService.GetQcnum(popDto));
+            popDto.setAs_qcnum(CountNum(gsToday));
             popDto.setAs_qcseq(result3);
             popDto.setAs_pname(as_pname.get(i));
             popDto.setAs_psize(as_psize.get(i));
@@ -292,26 +235,89 @@ public class AppCA609Controller {
             popDto.setGs_perid(gsPerid);
 
 
-//            log.info(as_pcode.get(i) + " : pcode");
-//            log.info(as_cltcd.get(i) + " : cltcd");
-//            log.info(popDto.getAe_uamt() + " : uamt");
-//            log.info(popDto.getAs_qcnum() + " : qcnum");
-//            log.info(popDto.getAs_qcseq() + " : qcseq");
-//            log.info(as_pname.get(i)       + ": pname");
-//            log.info(as_psize.get(i)       + ": psize");
-//            log.info(as_punit.get(i)       + ": punit");
-//            log.info(ae_qty.get(i)         + ": qty");
-//            log.info(as_qcdv.get(i)        + ": qcdv");
-//            log.info(as_balseq.get(i)      + ": balseq");
-//            log.info(as_baldate.get(i)     + ": baldate");
-//            log.info(as_balnum.get(i)      + ": balnum");
-//            log.info(as_ischdate.get(i)    + ": ischdate");
-//            log.info(popDto.getGs_perid()  + ": perid");
+            log.info(as_pcode.get(i) + " : pcode");
+            log.info(as_cltcd.get(i) + " : cltcd");
+            log.info(popDto.getAe_uamt() + " : uamt");
+            log.info(popDto.getAs_qcnum() + " : qcnum");
+            log.info(popDto.getAs_qcseq() + " : qcseq");
+            log.info(as_pname.get(i)       + ": pname");
+            log.info(as_psize.get(i)       + ": psize");
+            log.info(as_punit.get(i)       + ": punit");
+            log.info(ae_qty.get(i)         + ": qty");
+            log.info(as_qcdv.get(i)        + ": qcdv");
+            log.info(as_balseq.get(i)      + ": balseq");
+            log.info(as_baldate.get(i)     + ": baldate");
+            log.info(as_balnum.get(i)      + ": balnum");
+            log.info(as_ischdate.get(i)    + ": ischdate");
+            log.info(popDto.getGs_perid()  + ": perid");
 
             authService.Insert_TB_CA624(popDto);
 
 
 
+        }
+
+        for(int i=0; i< as_wqcqty.size(); i++){
+
+            popDto.setWmqty(as_wqcqty.get(i));
+            popDto.setAs_baldate(as_baldate.get(i));
+            popDto.setAs_balnum(as_balnum.get(i));
+            popDto.setAs_balseq(as_balseq.get(i));
+
+            list = authService.select_tb_ca608_head(popDto);
+
+
+//            log.info(list.get(0).getLl_cnt());
+//            log.info(list.get(0).getLl_cnt1());
+//            log.info(list.get(0).getLl_cnt2());
+//            log.info(list.get(0).getLl_cnt3());
+//            log.info(list.get(0).getLl_cnt4());
+//            log.info(as_wqcqty.get(i) + " : wqcqty");
+//            log.info(as_baldate.get(i) + " : baldate");
+//            log.info(as_balnum.get(i) + " : balnum");
+//            log.info(as_balseq.get(i) + " : balseq");
+
+
+
+
+            if(list.get(i).getLl_cnt() > list.get(i).getLl_cnt2()) {
+                if (list.get(i).getLl_cnt1() > 0) {
+                    ls_qcflag2 = "1";
+                } else {
+                    if (list.get(i).getLl_cnt2() > 0) {
+                        ls_qcflag2 = "1";
+                    } else {
+                        ls_qcflag2 = "0";
+                    }
+                }
+            }else{
+                ls_qcflag2 = "2";
+            }
+
+            if(list.get(i).getLl_cnt() > list.get(i).getLl_cnt4()){
+                if(list.get(i).getLl_cnt3() > 0){
+                    ls_ibgflag2 = "1";
+                }else{
+                    if(list.get(i).getLl_cnt4() > 0){
+                        ls_ibgflag2 = "1";
+                    }else{
+                        ls_ibgflag2 = "0";
+                    }
+                }
+
+            }else{
+                ls_ibgflag2 = "2";
+            }
+
+            popDto.setLs_qcflag(ls_qcflag2);
+            popDto.setLs_ibgflag(ls_ibgflag2);
+
+//            log.info(popDto.getLs_qcflag() + " : qcflg");
+//            log.info(popDto.getLs_ibgflag() + " : ibgflg");
+
+
+            authService.Update_TB_CA609(popDto);
+            authService.Update_TB_CA608(popDto);
         }
 
 
@@ -531,9 +537,9 @@ public class AppCA609Controller {
             ca609Dto.setQcdate(qcdateList.get(i));
             ca609Dto.setQcnum(qcnumList.get(i));
             ca609Dto.setQcseq(qcseqList.get(i));
-            System.out.println(ca609Dto.getBaldate());
-            System.out.println(ca609Dto.getBalnum());
-            System.out.println(ca609Dto.getBalseq());
+//            System.out.println(ca609Dto.getBaldate());
+//            System.out.println(ca609Dto.getBalnum());
+//            System.out.println(ca609Dto.getBalseq());
 //            System.out.println(ca609Dto.getWqty());
 //            System.out.println(ca609Dto.getQcdate());
 //            System.out.println(ca609Dto.getQcnum());
@@ -625,6 +631,7 @@ public class AppCA609Controller {
         }
         return ls_compnum;
     }
+
 
 
 
