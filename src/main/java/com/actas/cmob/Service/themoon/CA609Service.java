@@ -144,6 +144,30 @@ public class CA609Service {
         }
     }
 
+    public int UpdateXlogin(CA609Dto parm){
+        String dbnm = parm.getDbnm();
+        switch (dbnm){
+            case "ERP_THEMOON":
+                return CA609Mapper.UpdateXlogin(parm);
+            default:
+                return 0;
+
+        }
+
+    }
+
+    public int InsertLogT(CA609Dto parm){
+        String dbnm = parm.getDbnm();
+        switch (dbnm){
+            case "ERP_THEMOON":
+                return CA609Mapper.InsertLogT(parm);
+            default:
+                return 0;
+
+        }
+
+    }
+
     public int UpdateQcflag(CA609Dto parm){
         String dbnm = parm.getDbnm();
         switch (dbnm){

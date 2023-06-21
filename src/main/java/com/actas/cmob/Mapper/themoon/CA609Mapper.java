@@ -53,4 +53,7 @@ public interface CA609Mapper {
 
     public String GetQcnum(CA609PopDto parm);
 
+    public int UpdateXlogin(CA609Dto parm);
+
+    public int InsertLogT(CA609Dto parm);
 }
