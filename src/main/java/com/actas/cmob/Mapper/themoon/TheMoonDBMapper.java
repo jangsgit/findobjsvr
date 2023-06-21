@@ -102,6 +102,9 @@ public interface TheMoonDBMapper {
 
     public int Update_tb_ca630Int(PopDto parm);
 
+    public String select_time(PopDto parm);
+
+
 
 
 

@@ -23,6 +23,9 @@ public class ThemoonAppService {
 
 
 
+    public String TimeCheck(PopDto parm){
+        return TheMoonDBMapper.select_time(parm);
+    }
 
     public int LoginCount(LoginLogDto parm){
         int queryResult = 1;

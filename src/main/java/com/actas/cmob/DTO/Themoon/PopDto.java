@@ -28,6 +28,8 @@ public class PopDto {
     private String silqty;
     private String sildate;
     private String indate;
+    private String time;
+
 
 
 

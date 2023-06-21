@@ -298,7 +298,7 @@
         update TB_XLOGIN
         set ofdate=GETDATE(),
             onoffdv='1'
-            where custcd = #{custcd} AND userid = #{userid} AND onoffdt = #{onoffdt}
+            where custcd = #{custcd} AND userid = #{userid} AND onoffdt = #{onoffdt} and ipaddr = #{ipaddr}
     </update>
 
     <select id="TB_CA501list" parameterType="com.actas.cmob.DTO.Themoon.PopDto" resultType="com.actas.cmob.DTO.Themoon.ThemoonListDto">
@@ -373,8 +373,8 @@
         INSERT INTO TB_FPLAN_WORK (custcd, spjangcd, plan_no, wono, wseq, wflag, wstdt, wendt, wfrdt, wtrdt, wrmc, winqt, wotqt, wqcqt, wbdqt, winps, wsyul,
                                    wtable, wrps, wremark, decision, wexdt, weseq, indate, inperid)
         values (
-                'THEMOON', 'ZZ', #{plan_no}, #{wono}, '03', '00030', #{gs_today}, #{gs_today}, GETDATE(), GETDATE(), '',0,#{wotqt}, 0, 0, 1, 0, 'TB_FPLAN_W30',
-                #{close_perid}, '', '0', '', '', #{gs_today}, #{close_perid}
+                'THEMOON', 'ZZ', #{plan_no}, #{wono}, '03', '00030', #{gs_today}, #{gs_today}, #{time}, #{time}, 'TM301',0,#{wotqt}, 0, 0, 1, 0, 'TB_FPLAN_W030',
+                #{close_perid}, '', '0', ' ', ' ', #{gs_today}, #{close_perid}
                )
     </insert>
 
@@ -384,7 +384,7 @@
                                    bcolor, decision, wexdt, weseq, indate, inperid
                                    )
         values(
-               'THEMOON', 'ZZ', #{plan_no}, '03', '00030', GETDATE(), GETDATE(), '', 0, #{wotqt}, 0, 0, 1, 0, #{close_perid}, '', 0, '0', '0', '', '', #{gs_today},
+               'THEMOON', 'ZZ', #{plan_no}, '03', '00030', #{time}, #{time}, '', 0, #{wotqt}, 0, 0, 1, 0, #{close_perid}, '', 0, '0', '0', '', '', #{gs_today},
                #{close_perid}
 
               )
@@ -395,7 +395,7 @@
     <!--로그 생성-->
     <insert id="Insert_login_h" parameterType="com.actas.cmob.DTO.Themoon.LoginLogDto">
         INSERT INTO TB_XLOGIN_H ( londt, custcd, spjangcd, userid, winid, buton, ipaddr, usernm, winnm, tbkey )
-            VALUES (GETDATE(), 'THEMOON', 'ZZ', #{userid}, #{winid}, #{buton}, #{ipaddr}, #{usernm}, #{winnm}, '')
+        VALUES (GETDATE(), 'THEMOON', 'ZZ', #{userid}, #{winid}, #{buton}, #{ipaddr}, #{usernm}, #{winnm}, '')
     </insert>
 
     <insert id="Insert_tb_fplan_owork" parameterType="com.actas.cmob.DTO.Themoon.PopDto">
@@ -404,7 +404,7 @@
             custcd, spjangcd, plan_no, wseq, wflag, seq, pcode, lotno, store, wotdt, wqty, bqty, qty, styn, indate, inperid
         ) VALUES
         (
-               'THEMOON', 'ZZ', #{plan_no}, '03', '00030', '01', #{pcode}, #{lotno}, 'P01', #{gs_today}, #{wotqt}, 0, #{wotqt}, '1', #{gs_today}, #{close_perid}
+               'THEMOON', 'ZZ', #{plan_no}, '03', '00030', '001', #{pcode}, #{lotno}, 'P01', #{gs_today}, #{wotqt}, 0, #{wotqt}, '1', #{gs_today}, #{close_perid}
         )
     </insert>
 
@@ -427,10 +427,14 @@
              custcd, spjangcd, plan_no, wseq, seq, wflag, wfrdt, wtrdt, wopdv, wdtcd, wrerm
             ) values
             (
-             'THEMOON', 'ZZ', #{plan_no}, '03', '01', '00030', GETDATE(), GETDATE(), '0', '',''
+             'THEMOON', 'ZZ', #{plan_no}, '03', '01', '00030', #{time},
+             #{time}, '0', '',''
             )
     </insert>
 
+    <select id="select_time" parameterType="com.actas.cmob.DTO.Themoon.PopDto" resultType="String">
+        select CONCAT(#{gs_today},' ',CONVERT(varchar(12), GETDATE(), 114))
+    </select>
 
     <select id="Select_List" parameterType="com.actas.cmob.DTO.Themoon.PopDto" resultType="com.actas.cmob.DTO.Themoon.ThemoonListDto2">
         SELECT ISNULL(TB_FPLAN_WORK.wendt,'') as wendt,
@@ -488,7 +492,7 @@
     <select id="select_tb_ca630" parameterType="com.actas.cmob.DTO.Themoon.PopDto" resultType="com.actas.cmob.DTO.Themoon.ThemoonListDto2">
         select ISNULL(phm_pcod,'') as pcode, ISNULL(phm_pnam,'') as pname, ISNULL(phm_size,'') as psize, ISNULL(phm_unit,'') as punit, ISNULL(code88,'') as lotno,
         ISNULL(dbo.DF_TB_CA601_ENDDATE('THEMOON', 'ZZ', #{gs_today}, 'P01', phm_pcod),'') as stdate,
-        ISNULL(CONVERT(VARCHAR(10) ,dbo.DF_TB_CA602_PCODE_JQTY('THEMOON', 'ZZ', 'P01', phm_pcod, dbo.DF_TB_CA601_ENDDATE('THEMOON', 'ZZ', #{gs_today}, 'P01', phm_pcod), #{gs_today})), '')
+        ISNULL(CONVERT(VARCHAR(10) ,dbo.DF_TB_CA602_PCODE_LOTNO_JQTY('THEMOON', 'ZZ', 'P01', phm_pcod, code88, dbo.DF_TB_CA601_ENDDATE('THEMOON', 'ZZ', #{gs_today}, 'P01', phm_pcod), #{gs_today})), '')
         as jaeqty
         from tb_ca501 with(nolock) where phm_cust = 'THEMOON' and code88 = #{code88}
     </select>

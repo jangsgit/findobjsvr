@@ -206,7 +206,7 @@ public class Appthemoon01Controller {
 
         String ls_dbnm = "";
 
-
+        String time = "";
 
         String dbnm = data.get("dbnm").toString();
         String closePerid = data.get("close_perid").toString();
@@ -218,6 +218,9 @@ public class Appthemoon01Controller {
         List<String> lotnoList = (List<String>) data.get("lotnoList");
         List<String> pcodeList = (List<String>) data.get("pcodeList");
         List<String> endqtyList = (List<String>) data.get("end_qty");
+
+        time = themoonAppService.TimeCheck(popDto);
+
 
 
 
@@ -246,6 +249,7 @@ public class Appthemoon01Controller {
             popDto2.setGs_today(close_date);
             popDto2.setWotqt(endqtyList.get(i));
             popDto2.setClose_perid(closePerid);
+            popDto2.setTime(time);
 
             themoonAppService.Insert_TB_FPLAN_WORK(popDto2);
 
@@ -266,6 +270,7 @@ public class Appthemoon01Controller {
             popDto3.setWotqt(endqtyList.get(i));
             popDto3.setClose_perid(closePerid);
             popDto3.setGs_today(close_date);
+            popDto3.setTime(time);
 
             themoonAppService.Insert_TB_FPLAN_W030(popDto3);
 
@@ -313,11 +318,14 @@ public class Appthemoon01Controller {
 
         for(int i=0; i< planNoList.size(); i++){
             popDto6.setPlan_no(planNoList.get(i));
+            popDto6.setGs_today(close_date);
+            popDto6.setTime(time);
            themoonAppService.INSERT_TB_FPLAN_WTIME(popDto6);
 
         }
 
         log.info(popDto6.getPlan_no() + " 6번째, Plan_no");
+        log.info(popDto6.getGs_today());
 
         return "success";
     }
@@ -520,6 +528,12 @@ public class Appthemoon01Controller {
 
             log.info(pcodeList.size() + " 사이즈");
 
+            log.info(popDto.getGs_today() + " " +  i +"번쨰");
+            log.info(popDto.getPcode() + " " + i + "번째");
+            log.info(popDto.getJaeqty() + " " + i + "번째");
+            log.info(popDto.getSilqty() + " " + i + "번째");
+
+
             List<ThemoonListDto2> list01Dto = new ArrayList<>();
 
             list01Dto = themoonAppService.insert_check(popDto);
@@ -528,6 +542,8 @@ public class Appthemoon01Controller {
             if(list01Dto.isEmpty()){
                 themoonAppService.insert_tb_ca630(popDto);
                 log.info("1");
+
+
             }else{
                 themoonAppService.Update_tb_ca630Int(popDto);
                 log.info("2");
