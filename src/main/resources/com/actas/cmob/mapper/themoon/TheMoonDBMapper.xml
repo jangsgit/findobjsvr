@@ -319,7 +319,7 @@
         SELECT ISNULL(TB_FPLAN.wono,'') as wono, ISNULL(TB_FPLAN.lotno,'') as lotno, ISNULL(TB_FPLAN.plan_no,'') as plan_no, ISNULL(TB_FPLAN.cltcd,'') as cltcd,
                ISNULL(TB_XCLIENT.cltnm,'') as cltnm,
                ISNULL(TB_FPLAN.pcode,'') as pcode, ISNULL(TB_FPLAN.pname,'') as pname,
-               ISNULL(TB_FPLAN.psize,'') as psize, ISNULL(TB_FPLAN.punit,'') as punit, (TB_FPLAN_WORK.wotqt - TB_FPLAN_WORK.wbdqt) as wfokqt,
+               ISNULL(TB_FPLAN.psize,'') as psize, ISNULL(TB_FPLAN.punit,'') as punit, CONVERT(INT, (TB_FPLAN_WORK.wotqt - TB_FPLAN_WORK.wbdqt)) as wfokqt,
                ISNULL(TB_FPLAN_WORK.wendt,'') as wendt
         FROM
             TB_FPLAN WITH(NOLOCK), TB_FPLAN_WORK WITH(NOLOCK), TB_XCLIENT WITH(NOLOCK), TB_CA501 WITH(NOLOCK)
@@ -384,7 +384,7 @@
                                    bcolor, decision, wexdt, weseq, indate, inperid
                                    )
         values(
-               'THEMOON', 'ZZ', #{plan_no}, '03', '00030', #{time}, #{time}, '', 0, #{wotqt}, 0, 0, 1, 0, #{close_perid}, '', 0, '0', '0', '', '', #{gs_today},
+               'THEMOON', 'ZZ', #{plan_no}, '03', '00030', #{time}, #{time}, 'TM301', 0, #{wotqt}, 0, 0, 1, 0, #{close_perid}, '', 0, '0', '0', '', '', #{gs_today},
                #{close_perid}
 
               )
@@ -448,7 +448,7 @@
                ISNULL(TB_FPLAN.pname,'') as pname,
                ISNULL(TB_FPLAN.psize,'') as psize,
                ISNULL(TB_FPLAN.punit,'') as punit,
-               ISNULL(TB_FPLAN_WORK.wotqt, 0) as wotqt
+               CONVERT(int, ISNULL(TB_FPLAN_WORK.wotqt, 0)) as wotqt
         FROM TB_FPLAN WITH(NOLOCK), TB_FPLAN_WORK WITH(NOLOCK), TB_XCLIENT WITH(NOLOCK), TB_CA501 WITH(NOLOCK)
         WHERE (TB_FPLAN.custcd = TB_FPLAN_WORK.custcd) and (TB_FPLAN.spjangcd = TB_FPLAN_WORK.spjangcd) AND (TB_FPLAN.plan_no = TB_FPLAN_WORK.plan_no)
         AND (TB_FPLAN.cls_flag = '4') AND (TB_FPLAN.custcd = TB_XCLIENT.custcd)
