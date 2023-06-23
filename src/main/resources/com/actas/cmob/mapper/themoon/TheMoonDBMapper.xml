@@ -282,7 +282,7 @@
         SELECT
             COUNT(*)
         FROM TB_XLOGIN WITH(NOLOCK)
-        WHERE custcd = #{custcd} AND ipaddr = #{ipaddr} AND onoffdt = #{onoffdt}
+        WHERE custcd = #{custcd} AND ipaddr = #{ipaddr} AND onoffdt = #{onoffdt} and userid = #{userid}
 
     </select>
 
@@ -320,7 +320,7 @@
                ISNULL(TB_XCLIENT.cltnm,'') as cltnm,
                ISNULL(TB_FPLAN.pcode,'') as pcode, ISNULL(TB_FPLAN.pname,'') as pname,
                ISNULL(TB_FPLAN.psize,'') as psize, ISNULL(TB_FPLAN.punit,'') as punit, CONVERT(INT, (TB_FPLAN_WORK.wotqt - TB_FPLAN_WORK.wbdqt)) as wfokqt,
-               ISNULL(TB_FPLAN_WORK.wendt,'') as wendt
+               ISNULL(TB_FPLAN_WORK.wendt,'') as wendt, CONVERT(int ,SUM(TB_FPLAN_WORK.wotqt - TB_FPLAN_WORK.wbdqt) OVER ()) as wfokqt_sum
         FROM
             TB_FPLAN WITH(NOLOCK), TB_FPLAN_WORK WITH(NOLOCK), TB_XCLIENT WITH(NOLOCK), TB_CA501 WITH(NOLOCK)
         WHERE (TB_FPLAN.custcd = TB_FPLAN_WORK.custcd) and (TB_FPLAN.spjangcd = TB_FPLAN_WORK.spjangcd) AND (TB_FPLAN.plan_no = TB_FPLAN_WORK.plan_no)

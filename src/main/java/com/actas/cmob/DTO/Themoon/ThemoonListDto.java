@@ -14,6 +14,8 @@ public class ThemoonListDto {
     private String phm_size;
     private String phm_unit;
     private String code88;
+    private String wfokqt_sum;
+
 
 
 }

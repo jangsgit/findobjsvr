@@ -35,7 +35,7 @@ public class Appthemoon01Controller {
     PopDto popDto2 = new PopDto();
 
 
-
+    List<ThemoonListDto2> list03Dto = new ArrayList<>();
     PopDto popDto3 = new PopDto();
 
     PopDto popDto4 = new PopDto();
@@ -117,6 +117,7 @@ public class Appthemoon01Controller {
         if(result == 0){
             boolean resultset = themoonAppService.InsertLog(loginLogDto);
             if (!resultset) {
+
                 log.info("error1");
                 return "error";
 
@@ -124,6 +125,11 @@ public class Appthemoon01Controller {
         }else{
             boolean resultset2 = themoonAppService.UpdateLog(loginLogDto);
             if(!resultset2){
+
+                log.info(loginLogDto.getUserid() + " id");
+                log.info(loginLogDto.getOnoffdt() + " onoffdt");
+                log.info(loginLogDto.getIpaddr() + " ipaddr");
+
                 log.info("error2");
                 return "error";
             }
@@ -145,6 +151,8 @@ public class Appthemoon01Controller {
             , HttpServletRequest request) throws Exception{
 
 
+
+
         param.forEach((key, values) -> {
             switch (key){
                 case "dbnm":
@@ -152,6 +160,9 @@ public class Appthemoon01Controller {
                     break;
                 case "code88":
                     popDto.setCode88(values.replace("\n",""));
+                    break;
+                case "wendt":
+                    popDto.setWendt(values.toString());
                     break;
                 default:
                     break;
@@ -161,6 +172,7 @@ public class Appthemoon01Controller {
         log.info(popDto.getCode88() + " Code88");
 
         list01Dto = themoonAppService.TB_CA501list(popDto);
+
         return list01Dto;
     }
 
@@ -360,7 +372,7 @@ public class Appthemoon01Controller {
             switch (key) {
 
                 case "userid":
-                    loginLogDto.setUserid(values.toString());
+                    loginLogDto.setUserid(values.toString().replaceAll("p",""));
                     break;
                 case "ipaddr":
                     loginLogDto.setIpaddr(values.toString());

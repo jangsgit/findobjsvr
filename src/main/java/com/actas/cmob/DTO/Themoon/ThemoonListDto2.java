@@ -24,6 +24,8 @@ public class ThemoonListDto2 {
     private String wotqt;
     private String jaeqty;
     private String stdate;
+    private String wfokqt_sum;
+
 
 
 
