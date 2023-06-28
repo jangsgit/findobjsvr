@@ -150,9 +150,6 @@ public class Appthemoon01Controller {
             , Model model
             , HttpServletRequest request) throws Exception{
 
-
-
-
         param.forEach((key, values) -> {
             switch (key){
                 case "dbnm":
@@ -172,7 +169,19 @@ public class Appthemoon01Controller {
         log.info(popDto.getCode88() + " Code88");
 
         list01Dto = themoonAppService.TB_CA501list(popDto);
+        log.info(list01Dto.get(0).getPhm_pcod() + "aa");
+        popDto.setPcode(list01Dto.get(0).getPhm_pcod());
 
+
+
+        if(list03Dto.isEmpty()){
+            return list03Dto;
+       }
+        if(!list03Dto.isEmpty()){
+
+            list01Dto.get(0).setWfokqt_sum(list03Dto.get(0).getWfokqt_sum());
+            return list01Dto;
+        }
         return list01Dto;
     }
 
