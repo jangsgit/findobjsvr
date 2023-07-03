@@ -59,13 +59,13 @@
         WHERE custcd = #{custcd} AND spjangcd = #{spjangcd} AND plan_no = #{plan_no}
     </update>
 
-    <insert id="InsertLogT" parameterType="com.actas.cmob.DTO.CA609.CA609Dto">
+    <insert id="InsertLogT" parameterType="com.actas.cmob.DTO.Themoon.CA609Dto">
         INSERT INTO TB_XLOGIN ( custcd, userid, ipaddr, onoffdt, custnm, usernm, ondate, ofdate, onoffdv )
-        VALUES ( #{custcd}, #{userid}, #{ipaddr}, #{today}, #{spjangcd}, #{usernm}, GETDATE(), NULL, '0’ )
+        VALUES ( #{custcd}, #{userid}, #{ipaddr}, #{today}, #{spjangcd}, #{usernm}, GETDATE(), NULL, '0' )
     </insert>
 
-    <update id="UpdateXLogin" parameterType="com.actas.cmob.DTO.CA609.CA609Dto">
-        UPDATE TB_XLOGIN SET ofdate = GETDATE(), onoffdv = ‘1’
+    <update id="UpdateXLogin" parameterType="com.actas.cmob.DTO.Themoon.CA609Dto">
+        UPDATE TB_XLOGIN SET ofdate = GETDATE(), onoffdv = '1'
         WHERE custcd = #{custcd} AND userid = #{userid} AND ipaddr = #{ipaddr} AND onoffdt = #{today}
 
     </update>

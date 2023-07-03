@@ -30,4 +30,10 @@ public class KosepPopDto {
     private String tamt;
     private String mamt;
     private String message;
+    private String com_code;
+    private String com_cnam;
+    private String store;
+    private String pcode;
+    private String chulstore;
+    private String ipstore;
 }

@@ -8,6 +8,7 @@
         select top 1 userid, passwd1,  custnm, pernm, useyn, perid
         from TB_XUSERS where userid=#{userid} and passwd1=#{passwd1} and useyn = '1'
     </select>
+
     <select id="GetTBDA035List" parameterType="com.actas.cmob.DTO.Kosep.KosepPopDto"  resultType="com.actas.cmob.DTO.Kosep.KosepList01Dto">
         select  A.custcd AS custcd, A.spjangcd as spjangcd, B.cltcd as cltcd,
                 substring(A.fdeldate, 5,2) + '/' + substring(A.fdeldate, 7,2) as fdeldatetext, A.fdeldate  as fdeldate,
@@ -19,6 +20,52 @@
         where A.spjangcd = B.spjangcd and A.fdeldate = B.fdeldate and A.fdelnum=B.fdelnum
            AND B.cltcd = C.cltcd and A.pcode = D.phm_pcod and  A.fdeldate = #{todate} and ( Len(isnull(A.deldate , '')) = 0)
     </select>
+
+
+    <select id="GetTBCA510ChulStoreList" parameterType="com.actas.cmob.DTO.Kosep.KosepPopDto"  resultType="com.actas.cmob.DTO.Kosep.KosepPopDto">
+        <![CDATA[
+        select DISTINCT A.store as com_code, A.store as com_cnam
+        from (
+                 select TRIM(store) AS STORE from TB_DA006_IMPORT_PANNEL WHERE Len(isnull(trim(store),''))  > 0 group by TRIM(store)
+                 union
+                 select TRIM(store) AS STORE from TB_DA006_IMPORT_WINGBADY WHERE  Len(isnull(trim(store),''))  > 0 group by TRIM(store)
+             ) A
+        ]]>
+    </select>
+
+    <select id="GetTBCA510IpStoreList" parameterType="com.actas.cmob.DTO.Kosep.KosepPopDto"  resultType="com.actas.cmob.DTO.Kosep.KosepPopDto">
+        <![CDATA[
+        select  A.com_code, A.com_cnam
+        from tb_ca510 A WITH (NOLOCK)
+        where A.com_cls = '207' and A.com_code <> '00'
+        ORDER BY A.com_code
+        ]]>
+    </select>
+
+
+    <select id="GetPcodeDataList" parameterType="com.actas.cmob.DTO.Kosep.KosepPopDto"  resultType="com.actas.cmob.DTO.Kosep.KosepPopDto">
+        <![CDATA[
+        select A.color, A.grade, A.thick, A.width, A.qty, A.pcode, A.itemcd
+        from (
+                 select color, grade, thick, width, qty, pcode, itemcd from TB_DA006_IMPORT_PANNEL WHERE  isnull(trim(store),'')    = #{store} and itemcd = #{itemcd}
+                 union
+                 select color, grade, thick, width, delqty, pcode, itemcd as qty from TB_DA006_IMPORT_WINGBADY WHERE   isnull(trim(store),'')    = #{store} and itemcd = #{itemcd}
+             ) A
+        ]]>
+    </select>
+
+
+    <select id="GetPcodeDataList02" parameterType="com.actas.cmob.DTO.Kosep.KosepPopDto"  resultType="com.actas.cmob.DTO.Kosep.KosepPopDto">
+        <![CDATA[
+        select isnull(A.color,'') as color, isnull(A.grade,'') as grade, isnull(A.thick, 0) as thick, isnull(A.width,0) as width,   isnull(A.pcode, '') as pcode
+        from (
+                 select top 1 color, grade, thick, width,   pcode from TB_DA006_IMPORT_PANNEL WHERE  isnull(trim(store),'')    = #{store} and itemcd = #{itemcd}
+                 union
+                 select top 1 color, grade, thick, width,   pcode from TB_DA006_IMPORT_WINGBADY WHERE   isnull(trim(store),'')    = #{store} and itemcd = #{itemcd}
+             ) A
+        ]]>
+    </select>
+
 
     <select id="GetTBDA037ChulList" parameterType="com.actas.cmob.DTO.Kosep.KosepPopDto"  resultType="com.actas.cmob.DTO.Kosep.KosepList01Dto">
         select  A.custcd AS custcd, A.spjangcd as spjangcd, B.cltcd as cltcd,
@@ -81,6 +128,21 @@
 
 
     </select>
+
+
+    <select id="GetTBCA635MoveList" parameterType="com.actas.cmob.DTO.Kosep.KosepCa636Dto"  resultType="com.actas.cmob.DTO.Kosep.KosepCa636Dto">
+        select  A.custcd AS custcd, A.spjangcd as spjangcd,
+                substring(A.movdate, 5,2) + '/' + substring(A.movdate, 7,2) as strmovdate, A.movdate  as movdate,
+                A.movnum as movnum, B.movseq as movseq, isnull(B.pcode,'') as pcode, isnull(D.phm_pnam,'') as pname,
+                isnull(B.grade,'') as grade, isnull(B.width,0) as width, isnull(B.thick,0) as thick,
+                isnull(B.color,'') as color,   B.lotno as lotno
+        from TB_CA635 A WITH (NOLOCK) , TB_CA636 B WITH (NOLOCK) ,   TB_CA501 D WITH (NOLOCK)
+        where A.spjangcd = B.spjangcd and A.movdate = B.movdate and A.movnum=B.movnum
+          AND B.pcode = D.phm_pcod
+          AND A.movdate = #{movdate} and ( Len(isnull(A.movdate , '')) > 0)
+        ORDER BY B.movdate, B.movnum, B.movseq
+    </select>
+
 
     <select id="GetLotNoData" parameterType="hashmap"  resultType="com.actas.cmob.DTO.Kosep.KosepDa037Dto">
         select A.cltcd as cltcd, A.custcd AS custcd, A.spjangcd as spjangcd, '' as deldate, '' as delnum, A.pcode as  pcode,
@@ -145,7 +207,6 @@
         select max(delnum) from TB_DA036 where deldate = #{fdeldate}
     </select>
 
-
     <delete id="DeleteDA036" parameterType="com.actas.cmob.DTO.Kosep.KosepPopDto">
         delete from tb_da036
         where deldate = #{deldate} and delnum = #{delnum}
@@ -169,6 +230,33 @@
     </update>
 
 
+    <select id="getCa635MaxSeq" parameterType="com.actas.cmob.DTO.Kosep.KosepCa635Dto"   resultType="java.lang.String">
+        select max(movnum) as movnum from TB_CA635 where movdate = #{movdate}
+    </select>
+
+    <insert id="InsertCA635" parameterType="com.actas.cmob.DTO.Kosep.KosepCa635Dto" >
+        insert into tb_ca635 (custcd, spjangcd, movdate, movnum, delgb, delstore, ibggb, ibgstore,perid, indate, inperid) values
+            (#{custcd}, #{spjangcd},  #{movdate}, #{movnum}, #{delgb}, #{delstore}, #{ibggb}, #{ibgstore},#{perid}, #{indate}, #{inperid})
+    </insert>
+
+
+    <insert id="InsertCA636" parameterType="com.actas.cmob.DTO.Kosep.KosepCa636Dto" >
+        insert into tb_ca636 (custcd, spjangcd, movdate, movnum, movseq, pcode, lotno, grade, thick,width, color, indate, inperid) values
+            (#{custcd}, #{spjangcd},  #{movdate}, #{movnum}, #{movseq}, #{pcode}, #{lotno}, #{grade}, #{thick},#{width},  #{color}, #{indate}, #{inperid})
+    </insert>
+
+    <delete id="DeleteCA635" parameterType="com.actas.cmob.DTO.Kosep.KosepCa635Dto">
+        delete from tb_ca635
+        where movdate = #{movdate} and movnum = #{movnum}
+          and movdate + movnum not in (select movdate + movnum from tb_ca636 where movdate = #{movdate} and movnum=#{movnum} )
+    </delete>
+
+    <delete id="DeleteCA636" parameterType="com.actas.cmob.DTO.Kosep.KosepCa636Dto">
+        delete from tb_ca636
+        where movdate = #{movdate} and movnum = #{movnum} and movseq = #{movseq}
+    </delete>
+
+
     <update id="DeleteDA006PAN" parameterType="com.actas.cmob.DTO.Kosep.KosepPopDto">
         update TB_DA006_IMPORT_PANNEL set fdeldate = null, fdelchk = 'N'  where CONVERT(CHAR(8), fdeldate, 112) = #{deldate} and fdelchk = 'Y' and itemcd = #{lotno}
 
@@ -179,6 +267,7 @@
         update TB_DA006_IMPORT_WINGBADY set fdeldate = null, fdelchk = 'N'   where CONVERT(CHAR(8), fdeldate, 112) = #{deldate} and fdelchk = 'Y' and itemcd = #{lotno}
 
     </update>
+
 
     <insert id="InsertDA036" parameterType="com.actas.cmob.DTO.Kosep.KosepDa036Dto" >
         insert into tb_da036 (custcd, spjangcd, deldate, delnum, deltype, cltcd, perid, taxcls,setcls, store, domcls, moncls, monrate, sunamt, sunflag,inperid,

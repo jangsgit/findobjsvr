@@ -23,12 +23,13 @@ import java.util.*;
 public class Appkosep01Controller {
     protected Log log =  LogFactory.getLog(this.getClass());
     KosepPopDto popDto = new KosepPopDto();
-    KosepDa036Dto da036Dto = new KosepDa036Dto();
-    List<KosepDa037Dto> da037ListDto = new ArrayList<>();
-    KosepDa037Dto da037Dto = new KosepDa037Dto();
+    KosepCa635Dto Ca635Dto = new KosepCa635Dto();
+    List<KosepCa636Dto> Ca636ListDto = new ArrayList<>();
+    KosepCa636Dto Ca636Dto = new KosepCa636Dto();
     KosepDa037Dto da037LotDto = new KosepDa037Dto();
     KosepDa037HDto da037HDto = new KosepDa037HDto();
     List<KosepList01Dto> list01Dto = new ArrayList<>();
+    List<KosepPopDto> popDtoList = new ArrayList<>();
     private final KosepAppService authService;
 
 
@@ -307,6 +308,151 @@ public class Appkosep01Controller {
     }
 
 
+    //  //출고등록
+    @Transactional(rollbackFor = {RuntimeException.class, Exception.class, SQLException.class})
+    @RequestMapping(value="/list03save",method = RequestMethod.POST,
+            headers = ("content-type=multipart/*"),
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public Object Appcom03Save_index(@RequestParam Map<String, String> param
+            , Model model
+            , HttpServletRequest request) throws Exception {
+        String ls_itemcd = "";
+        param.forEach((key, values) -> {
+            switch (key) {
+                case "dbnm":
+                    Ca635Dto.setDbnm(values.toString());
+                    break;
+                case "chulstore":
+                    Ca635Dto.setDelstore(values.toString());
+                    break;
+                case "ipstore":
+                    Ca635Dto.setIbgstore(values.toString());
+                    break;
+                case "movedate":
+                    Ca635Dto.setMovdate(values.toString());
+                    break;
+                case "perid":
+                    Ca635Dto.setPerid(values.toString());
+                    break;
+                case "itemcd":
+                    Ca636Dto.setItemcd(values.toString());
+                    break;
+                default:
+                    break;
+            }
+        });
+        String ls_perid = Ca635Dto.getPerid();
+        popDto.setPerid(ls_perid.substring(1));
+
+
+        int queryResult = 0;
+
+        ls_itemcd = Ca636Dto.getItemcd();
+        String[] listBarcode = ls_itemcd.split("[|]");
+        HashMap hm = new HashMap();
+        hm.put("color", popDto.getColor());
+        hm.put("grade", popDto.getGrade());
+        hm.put("thick", popDto.getThick());
+        hm.put("width", popDto.getWidth());
+        hm.put("itemcdArr", listBarcode);
+        hm.put("dbnm", popDto.getDbnm());
+
+        String ls_movenum = GetCa635MaxNum();
+        Ca635Dto.setMovnum(ls_movenum);
+        Ca635Dto.setDelgb("1");
+        Ca635Dto.setIbggb("1");
+        Ca635Dto.setIndate(getToDate());
+        Ca635Dto.setInperid(ls_perid);
+        Ca635Dto.setCustcd("KOSEP");
+        Ca635Dto.setSpjangcd("ZZ");
+        Ca636Dto.setMovnum(ls_movenum);
+        queryResult = authService.InsertCA635(Ca635Dto);
+        if (queryResult < 1) {
+            queryResult = 0;
+//                return "InsertCA636 ERROR";
+        }
+        Integer ll_movenum = 1;
+        String ls_moveseq = "";
+        //---------------------- DA006 UPDATE Process---------------------------------//
+        //----------------------------------------------------------------------------//
+
+        for (var item : listBarcode) {
+            Ca636Dto.setCustcd("KOSEP");
+            Ca636Dto.setSpjangcd("ZZ");
+            Ca636Dto.setMovdate(Ca635Dto.getMovdate());
+            Ca636Dto.setMovnum(ls_movenum);
+            Ca636Dto.setLotno(item);
+            popDto.setItemcd(item);
+            popDto.setStore(Ca635Dto.getDelstore());
+            popDto = authService.GetPcodeDataList02(popDto);
+
+            Ca636Dto.setPcode(popDto.getPcode());
+            Ca636Dto.setGrade(popDto.getGrade());
+            Ca636Dto.setThick(popDto.getThick());
+            Ca636Dto.setWidth(popDto.getWidth());
+            Ca636Dto.setColor(popDto.getColor());
+            Ca636Dto.setIndate(getToDate());
+            Ca636Dto.setInperid(ls_perid);
+            ls_moveseq = ll_movenum.toString();
+            if (ls_moveseq.length() == 1){
+                ls_moveseq = "00" + ls_moveseq;
+            }else{
+                ls_moveseq = "0" + ls_moveseq;
+            }
+            ll_movenum++;
+            Ca636Dto.setMovseq(ls_moveseq);
+
+            queryResult = authService.InsertCA636(Ca636Dto);
+            if (queryResult < 1) {
+                queryResult = 0;
+//                return "InsertCA636 ERROR";
+            }
+        }
+
+
+        return "SUCCESS";
+    }
+
+
+    public String GetCa635MaxNum(){
+
+        String ls_misnum = "";
+        ls_misnum = authService.getCa635MaxSeq(Ca635Dto);
+        if(ls_misnum == null){
+            ls_misnum = "0001";
+        }else{
+            Integer ll_misnum = Integer.parseInt(ls_misnum) + 1;
+            ls_misnum = ll_misnum.toString();
+            if (ls_misnum.length() == 1){
+                ls_misnum = "000" + ls_misnum;
+            }else if(ls_misnum.length() == 2){
+                ls_misnum = "00" + ls_misnum;
+            }else if(ls_misnum.length() == 3){
+                ls_misnum = "0" + ls_misnum;
+            }
+        }
+
+        return ls_misnum;
+    }
+
+
+    public String GetMaxSeq(String agDate){
+
+        String ls_seq = ""; // authService.getCa635MaxSeq(agDate);
+        if(ls_seq == null){
+            ls_seq = "001";
+        }else{
+            Integer ll_misnum = Integer.parseInt(ls_seq) + 1;
+            ls_seq = ll_misnum.toString();
+            if (ls_seq.length() == 1){
+                ls_seq = "00" + ls_seq;
+            }else if(ls_seq.length() == 2){
+                ls_seq = "0" + ls_seq;
+            }
+        }
+        return ls_seq;
+    }
+
 
     //  //출고현황 LOT
     @RequestMapping(value="/list03",method = RequestMethod.POST,
@@ -329,6 +475,140 @@ public class Appkosep01Controller {
         list01Dto = authService.GetTBDA035ChulList(popDto);
         return list01Dto;
     }
+
+
+    // 출고창고list
+    @RequestMapping(value="/list03chulstore",method = RequestMethod.POST,
+            headers = ("content-type=multipart/*"),
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public Object Appcom03ChulStore_index(@RequestParam Map<String, String> param
+            , Model model
+            , HttpServletRequest request) throws Exception{
+        param.forEach((key, values) -> {
+            switch (key){
+                case "dbnm":
+                    popDto.setDbnm(values.toString());
+                    break;
+                case "todate":
+                    popDto.setTodate(values.toString());
+                default:
+                    break;
+            }
+        });
+        popDtoList = authService.GetTBCA510ChulStoreList(popDto);
+        return popDtoList;
+    }
+
+    // 입고창고list
+    @RequestMapping(value="/list03ipstore",method = RequestMethod.POST,
+            headers = ("content-type=multipart/*"),
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public Object Appcom03IpStore_index(@RequestParam Map<String, String> param
+            , Model model
+            , HttpServletRequest request) throws Exception{
+        param.forEach((key, values) -> {
+            switch (key){
+                case "dbnm":
+                    popDto.setDbnm(values.toString());
+                    break;
+                case "todate":
+                    popDto.setTodate(values.toString());
+                default:
+                    break;
+            }
+        });
+        popDtoList = authService.GetTBCA510IpStoreList(popDto);
+        return popDtoList;
+    }
+
+
+    // 바코드로 제품체크
+    @RequestMapping(value="/list03Pcode",method = RequestMethod.POST,
+            headers = ("content-type=multipart/*"),
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public Object Appcom03Pcode_index(@RequestParam Map<String, String> param
+            , Model model
+            , HttpServletRequest request) throws Exception{
+        param.forEach((key, values) -> {
+            switch (key){
+                case "dbnm":
+                    popDto.setDbnm(values.toString());
+                    break;
+                case "barcode":
+                    popDto.setItemcd(values.toString());
+                    break;
+                case "store":
+                    popDto.setStore(values.toString());
+                    break;
+                default:
+                    break;
+            }
+        });
+        popDtoList = authService.GetPcodeDataList(popDto);
+        log.info(popDtoList);
+        return popDtoList;
+    }
+
+    // 재고 이동현황
+    @RequestMapping(value="/list04",method = RequestMethod.POST,
+            headers = ("content-type=multipart/*"),
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public Object Appcom04_index(@RequestParam Map<String, String> param
+            , Model model
+            , HttpServletRequest request) throws Exception{
+        param.forEach((key, values) -> {
+            switch (key){
+                case "todate":
+                    Ca636Dto.setMovdate(values.toString());
+                default:
+                    break;
+            }
+        });
+        Ca636ListDto = authService.GetTBCA635MoveList(Ca636Dto);
+        return Ca636ListDto;
+    }
+
+    //  //출고현황
+    @RequestMapping(value="/list04del",method = RequestMethod.POST,
+            headers = ("content-type=multipart/*"),
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public Object Appcom04DEL_index(@RequestParam Map<String, String> param
+            , Model model
+            , HttpServletRequest request) throws Exception{
+        param.forEach((key, values) -> {
+            switch (key){
+                case "dbnm":
+                    Ca636Dto.setDbnm(values.toString());
+                    break;
+                case "movdate":
+                    Ca636Dto.setMovdate(values.toString());
+                    break;
+                case "movnum":
+                    Ca636Dto.setMovnum(values.toString());
+                    break;
+                case "movseq":
+                    Ca636Dto.setMovseq(values.toString());
+                    break;
+                default:
+                    break;
+            }
+        });
+        int queryResult = 0;
+        queryResult = authService.DeleteCA636(Ca636Dto);
+        if(queryResult < 1){
+//            queryResult = 0;
+//            return "DeleteDA006PAN ERROR";
+        }
+
+        queryResult = authService.DeleteCA635(Ca636Dto);
+        if(queryResult < 1){
+//            queryResult = 0;
+//            return "DeleteDA006WIN ERROR";
+        }
+        return "SUCCESS";
+    }
+
+
 
     //  //출고현황
 /*    @RequestMapping(value="/list04",method = RequestMethod.POST,

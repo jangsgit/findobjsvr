@@ -35,6 +35,52 @@ public class KosepAppService {
         }
 
     }
+    public List<KosepPopDto> GetTBCA510ChulStoreList(KosepPopDto parm){
+        String dbnm = parm.getDbnm();
+        switch (dbnm){
+            case "ERP_KOSEP":
+                return kosepMapper.GetTBCA510ChulStoreList(parm);
+            default:
+                return null;
+
+        }
+
+    }
+
+    public  List<KosepPopDto> GetPcodeDataList(KosepPopDto parm){
+        String dbnm = parm.getDbnm();
+        switch (dbnm){
+            case "ERP_KOSEP":
+                return kosepMapper.GetPcodeDataList(parm);
+            default:
+                return null;
+
+        }
+
+    }
+    public  List<KosepCa636Dto> GetTBCA635MoveList(KosepCa636Dto parm){
+          return kosepMapper.GetTBCA635MoveList(parm);
+    }
+
+
+
+    public  KosepPopDto GetPcodeDataList02(KosepPopDto parm){
+        return kosepMapper.GetPcodeDataList02(parm);
+
+    }
+
+
+    public List<KosepPopDto> GetTBCA510IpStoreList(KosepPopDto parm){
+        String dbnm = parm.getDbnm();
+        switch (dbnm){
+            case "ERP_KOSEP":
+                return kosepMapper.GetTBCA510IpStoreList(parm);
+            default:
+                return null;
+
+        }
+
+    }
 
     public List<KosepList01Dto> GetTBDA035ChulList(KosepPopDto parm){
         String dbnm = parm.getDbnm();
@@ -95,6 +141,19 @@ public class KosepAppService {
 
     }
 
+
+    public String getCa635MaxSeq(KosepCa635Dto parm){
+        String dbnm = parm.getDbnm();
+        switch (dbnm){
+            case "ERP_KOSEP":
+                return kosepMapper.getCa635MaxSeq(parm);
+            default:
+                return null;
+
+        }
+
+    }
+
     public String getDa036MaxSeq(KosepPopDto parm){
         String dbnm = parm.getDbnm();
         switch (dbnm){
@@ -108,6 +167,30 @@ public class KosepAppService {
         }
 
     }
+
+    public int InsertCA635(KosepCa635Dto parm) {
+        int queryResult = 1;
+
+
+        queryResult = kosepMapper.InsertCA635(parm);
+        if (queryResult < 1) {
+            queryResult = 0;
+        }
+        return queryResult;
+    }
+
+    public int InsertCA636(KosepCa636Dto parm) {
+        int queryResult = 1;
+
+
+        queryResult = kosepMapper.InsertCA636(parm);
+        if (queryResult < 1) {
+            queryResult = 0;
+        }
+        return queryResult;
+    }
+
+
 
     public int InsertDA036(KosepDa036Dto parm) {
         int queryResult = 1;
@@ -181,6 +264,25 @@ public class KosepAppService {
     public int DeleteDA037H(KosepPopDto parm) {
         int queryResult = 1;
         queryResult = kosepMapper.DeleteDA037H(parm);
+        if (queryResult < 1) {
+            queryResult = 0;
+        }
+        return queryResult;
+    }
+
+
+    public int DeleteCA636(KosepCa636Dto parm) {
+        int queryResult = 1;
+        queryResult = kosepMapper.DeleteCA636(parm);
+        if (queryResult < 1) {
+            queryResult = 0;
+        }
+        return queryResult;
+    }
+
+    public int DeleteCA635(KosepCa636Dto parm) {
+        int queryResult = 1;
+        queryResult = kosepMapper.DeleteCA635(parm);
         if (queryResult < 1) {
             queryResult = 0;
         }
