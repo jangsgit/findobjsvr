@@ -536,7 +536,28 @@ public class Appthemoon01Controller {
         List<String> lotno = (List<String>) data.get("lotnoList");
 
 
+        for(int i=0; i < pcodeList.size(); i++){
 
+            popDto.setGs_today(close_date);
+            popDto.setGs_perid(closePerid);
+            popDto.setPcode(pcodeList.get(i));
+            popDto.setJaeqty(jaeqtyList.get(i));
+            popDto.setSilqty(silqty.get(i));
+            popDto.setLotno(lotno.get(i));
+
+
+            List<ThemoonListDto2> list011Dto = new ArrayList<>();
+            list011Dto = themoonAppService.insert_check(popDto);
+
+
+            if(!list011Dto.isEmpty()){
+                if(list011Dto.get(0).getBanflag().contains("1")){
+                    return "exist";
+                }
+            }
+
+
+        }
 
         for(int i=0; i < pcodeList.size(); i++){
 
@@ -560,13 +581,17 @@ public class Appthemoon01Controller {
             list01Dto = themoonAppService.insert_check(popDto);
 
 
+
             if(list01Dto.isEmpty()){
                 themoonAppService.insert_tb_ca630(popDto);
                 log.info("1");
 
 
             }else{
-                themoonAppService.Update_tb_ca630Int(popDto);
+
+                    themoonAppService.Update_tb_ca630Int(popDto);
+
+
                 log.info("2");
             }
 

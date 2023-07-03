@@ -517,7 +517,7 @@
 
 
     <select id="insert_check" parameterType="com.actas.cmob.DTO.Themoon.PopDto" resultType="com.actas.cmob.DTO.Themoon.ThemoonListDto2">
-        select sildate, pcode, lotno, indate from tb_ca630 where pcode=#{pcode} and sildate = #{gs_today} and lotno = #{lotno}
+        select sildate, pcode, lotno, indate, banflag from tb_ca630 where pcode=#{pcode} and sildate = #{gs_today} and lotno = #{lotno}
 
     </select>
 
