@@ -388,14 +388,16 @@
     </update>
     <update id="UpdateDA006PANNEL" parameterType="com.actas.cmob.DTO.Kosep.KosepPopDto">
         update TB_DA006_IMPORT_PANNEL
-        set fdeldate=getdate(),
+        set fdeldate = #{fdeldate},
+            fdelnum  = #{fdelnum},
             fdelchk='Y'
         where itemcd = #{lotno}
     </update>
 
     <update id="UpdateDA006WINGBADY" parameterType="com.actas.cmob.DTO.Kosep.KosepPopDto">
         update TB_DA006_IMPORT_WINGBADY
-        set fdeldate=getdate(),
+        set fdeldate = #{fdeldate},
+            fdelnum  = #{fdelnum},
             fdelchk='Y'
         where itemcd = #{lotno}
     </update>
