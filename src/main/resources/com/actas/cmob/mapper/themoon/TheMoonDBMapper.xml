@@ -524,7 +524,7 @@
     <update id="Update_tb_ca630Int" parameterType="com.actas.cmob.DTO.Themoon.PopDto">
         UPDATE tb_ca630 SET custcd = 'THEMOON', spjangcd = 'ZZ', store = 'P01',sildate = #{gs_today}, pcode = #{pcode}, lotno = #{lotno}, jaeqty = #{jaeqty},
                             jaeuamt = '0', jaeamt = '0', silqty = #{silqty}, siluamt = 0, silamt = 0, banflag = '0', banyn = '0', acc_flag = '0', acc_spdate = '',
-                            acc_spnum = '', sildv = '', remark = '', indate = #{gs_today}, inperid = #{gs_perid}  where sildate = #{gs_today} and pcode = #{pcode} and
+                            acc_spnum = '', sildv = '', remarks = '', indate = #{gs_today}, inperid = #{gs_perid}  where sildate = #{gs_today} and pcode = #{pcode} and
             lotno = #{lotno}
     </update>
 
