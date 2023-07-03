@@ -507,7 +507,7 @@
 
     <insert id="insert_tb_ca630" parameterType="com.actas.cmob.DTO.Themoon.PopDto">
         insert into tb_ca630 (custcd, spjangcd, store, sildate, pcode, lotno, jaeqty, jaeuamt, jaeamt, silqty, siluamt, silamt, banflag, banyn, acc_flag, acc_spdate,
-                              acc_spnum, sildv, remark, indate, inperid) values
+                              acc_spnum, sildv, remarks, indate, inperid) values
                               (
                                'THEMOON', 'ZZ', 'P01', #{gs_today}, #{pcode}, #{lotno}, #{jaeqty}, 0, 0, #{silqty}, 0, 0, '0', '0', '0', '', '', '', '',
                                #{gs_today}, #{gs_perid}
