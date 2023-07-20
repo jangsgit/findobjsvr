@@ -105,6 +105,11 @@ public interface TheMoonDBMapper {
     public String select_time(PopDto parm);
 
 
+    public int insert_tb_fplan_sub(PopDto parm);
+
+
+    public int delete_tb_fplan_sub(PopDto parm);
+
 
 
 

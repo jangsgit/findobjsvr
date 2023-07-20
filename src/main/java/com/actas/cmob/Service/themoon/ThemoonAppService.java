@@ -319,4 +319,26 @@ public class ThemoonAppService {
 
 
     }
+
+    public boolean insert_tb_fplan_sub(PopDto parm){
+
+        int queryResult = 1;
+        queryResult = TheMoonDBMapper.insert_tb_fplan_sub(parm);
+        if(queryResult < 1){
+            queryResult = 0;
+        }
+        return (queryResult > 0);
+
+    }
+
+    public boolean delete_tb_fplan_sub(PopDto parm){
+
+        int queryReusult = 1;
+        queryReusult = TheMoonDBMapper.delete_tb_fplan_sub(parm);
+        if(queryReusult < 1){
+            queryReusult = 0;
+        }
+        return (queryReusult > 0);
+
+    }
 }

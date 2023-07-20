@@ -44,6 +44,8 @@ public class Appthemoon01Controller {
 
     PopDto popDto6 = new PopDto();
 
+    PopDto popDto7 = new PopDto();
+
     List<ThemoonListDto> list01Dto = new ArrayList<>();
 
 
@@ -348,6 +350,15 @@ public class Appthemoon01Controller {
         log.info(popDto6.getPlan_no() + " 6번째, Plan_no");
         log.info(popDto6.getGs_today());
 
+        for(int i=0; i< planNoList.size(); i++){
+            popDto7.setPlan_no(planNoList.get(i));
+            popDto7.setGs_today(close_date);
+            popDto7.setClose_perid(closePerid);
+            popDto7.setWotqt(endqtyList.get(i));
+            themoonAppService.insert_tb_fplan_sub(popDto7);
+
+        }
+
         return "success";
     }
 
@@ -470,6 +481,7 @@ public class Appthemoon01Controller {
             themoonAppService.delete_tb_fplan_owork(popDto);
             themoonAppService.delete_tb_fplan_wperid(popDto);
             themoonAppService.delete_tb_fplan_wtime(popDto);
+            themoonAppService.delete_tb_fplan_sub(popDto);
 
         }
         log.info(popDto.getPlan_no());

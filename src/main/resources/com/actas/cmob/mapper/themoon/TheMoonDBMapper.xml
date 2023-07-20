@@ -528,4 +528,17 @@
             lotno = #{lotno}
     </update>
 
+    <insert id="insert_tb_fplan_sub" parameterType="com.actas.cmob.DTO.Themoon.PopDto">
+        INSERT INTO TB_FPLAN_SUB (custcd, spjangcd, plan_no, plan_seq, wodv, close_date, close_perid, end_qty, strqty, daeqty, badqty, wram, woam, cls_flag,
+                                  remark, qcdate, qcqty, qcgb, deldate, delnum, delseq, delflag, selps, selck, perid) values
+                                  (
+                                   'THEMOON', 'ZZ', #{plan_no}, '01', '0', #{gs_today}, #{close_perid}, #{wotqt}, 0, 0, 0, 0, 0, '1', '', '', 0, '', '', '', '', '0', '', '0', ''
+                                  )
+
+    </insert>
+
+    <delete id="delete_tb_fplan_sub" parameterType="com.actas.cmob.DTO.Themoon.PopDto">
+        delete from TB_FPLAN_SUB where custcd = 'THEMOON' and spjangcd = 'ZZ' and plan_no = #{plan_no} and plan_seq = '01'
+    </delete>
+
 </mapper>
