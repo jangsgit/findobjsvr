@@ -171,19 +171,20 @@ public class Appthemoon01Controller {
         log.info(popDto.getCode88() + " Code88");
 
         list01Dto = themoonAppService.TB_CA501list(popDto);
-        log.info(list01Dto.get(0).getPhm_pcod() + "aa");
-        popDto.setPcode(list01Dto.get(0).getPhm_pcod());
+
+        if (!list01Dto.isEmpty()){
+              popDto.setPcode(list01Dto.get(0).getPhm_pcod());
 
 
-
-        if(list03Dto.isEmpty()){
-            return list03Dto;
-       }
-        if(!list03Dto.isEmpty()){
-
-            list01Dto.get(0).setWfokqt_sum(list03Dto.get(0).getWfokqt_sum());
-            return list01Dto;
+              List<ThemoonListDto2> storeInfoResult = themoonAppService.Store_Info(popDto);
+              if(!storeInfoResult.isEmpty()){
+                  for (int i = 0; i < list01Dto.size(); i++) {
+                      list01Dto.get(i).setWfokqt_sum(storeInfoResult.get(0).getWfokqt_sum());
+                  }
+              }
+               //themoonAppService.Store_Info(popDto).get(0).getWfokqt_sum();
         }
+
         return list01Dto;
     }
 
@@ -211,15 +212,15 @@ public class Appthemoon01Controller {
             }
         });
 
-        log.info(popDto.getPcode());
-        log.info(popDto.getWendt());
+        log.info(popDto.getPcode() + " Pcode");
+        log.info(popDto.getWendt() + " Wendt");
 
         list02Dto = themoonAppService.Store_Info(popDto);
         return list02Dto;
     }
 
 
-    /**로그인시 로그 저장*/
+    /**입고등록 저장*/
     @RequestMapping(value = "/Update_TB_FPLAN", method = RequestMethod.POST,
             headers = {"Content-Type=application/json"},
             consumes = MediaType.APPLICATION_JSON_VALUE
@@ -260,10 +261,10 @@ public class Appthemoon01Controller {
 
 
         }
-        log.info(popDto.getClose_date());
-        log.info(popDto.getEnd_qty());
-        log.info(popDto.getClose_perid());
-        log.info(popDto.getPlan_no());
+        log.info(popDto.getClose_date() + " 1번째");
+        log.info(popDto.getEnd_qty() +  "1번째");
+        log.info(popDto.getClose_perid() + "1번째");
+        log.info(popDto.getPlan_no() + "1번째");
 
         for(int i=0; i < planNoList.size(); i++){
 
@@ -358,6 +359,9 @@ public class Appthemoon01Controller {
             themoonAppService.insert_tb_fplan_sub(popDto7);
 
         }
+
+        log.info(popDto7.getPlan_no() + " 7번째");
+        log.info(popDto7.getWotqt() + " 7번째");
 
         return "success";
     }
@@ -520,8 +524,31 @@ public class Appthemoon01Controller {
         log.info(popDto.getGs_today()  + " : Gs_today");
         log.info(popDto.getCode88()    + " : Code88");
 
-
         lists = themoonAppService.select_tb_ca630(popDto);
+
+        String insertday = "";
+        String whether = "";
+
+        List<ThemoonListDto2> result = themoonAppService.tb_ca630_check(popDto);
+
+        if (result != null) {
+            for(int i=0; i< result.size(); i++){
+                insertday = result.get(0).getIndate();
+                whether = result.get(0).getWhether();
+            }
+
+        }
+
+
+
+            for(int i=0; i < lists.size(); i++){
+                lists.get(i).setIndate2(insertday);
+                lists.get(i).setWhether2(whether);
+            }
+
+
+
+
 
 
         return lists;
@@ -558,6 +585,14 @@ public class Appthemoon01Controller {
             popDto.setLotno(lotno.get(i));
 
 
+            log.info(popDto.getGs_today() + " check1");
+            log.info(popDto.getGs_perid() + " check2");
+            log.info(popDto.getPcode() + " check3");
+            log.info(popDto.getJaeqty() + " check4");
+            log.info(popDto.getSilqty() + " check5");
+            log.info(popDto.getLotno() + " check6");
+
+
             List<ThemoonListDto2> list011Dto = new ArrayList<>();
             list011Dto = themoonAppService.insert_check(popDto);
 
@@ -586,6 +621,14 @@ public class Appthemoon01Controller {
             log.info(popDto.getPcode() + " " + i + "번째");
             log.info(popDto.getJaeqty() + " " + i + "번째");
             log.info(popDto.getSilqty() + " " + i + "번째");
+
+
+            log.info(popDto.getGs_today() + " 2check1");
+            log.info(popDto.getGs_perid() + " 2check2");
+            log.info(popDto.getPcode() + " 2check3");
+            log.info(popDto.getJaeqty() + " 2check4");
+            log.info(popDto.getSilqty() + " 2check5");
+            log.info(popDto.getLotno() + " 2check6");
 
 
             List<ThemoonListDto2> list01Dto = new ArrayList<>();

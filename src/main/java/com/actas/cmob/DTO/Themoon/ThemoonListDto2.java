@@ -26,6 +26,12 @@ public class ThemoonListDto2 {
     private String stdate;
     private String wfokqt_sum;
     private String banflag;
+    private String whether;
+    private String indate2;
+    private String whether2;
+
+
+
 
 
 

@@ -110,6 +110,9 @@ public interface TheMoonDBMapper {
 
     public int delete_tb_fplan_sub(PopDto parm);
 
+    public List<ThemoonListDto2> tb_ca630_check(PopDto parm);
+
+
 
 
 

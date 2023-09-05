@@ -541,4 +541,19 @@
         delete from TB_FPLAN_SUB where custcd = 'THEMOON' and spjangcd = 'ZZ' and plan_no = #{plan_no} and plan_seq = '01'
     </delete>
 
+    <select id="tb_ca630_check" parameterType="com.actas.cmob.DTO.Themoon.PopDto" resultType="com.actas.cmob.DTO.Themoon.ThemoonListDto2">
+        SELECT
+            indate,
+            CASE
+                WHEN EXISTS (
+                        SELECT 1
+                        FROM TB_CA630
+                        WHERE indate = #{gs_today} AND lotno = #{code88}
+                    ) THEN '등록'
+                ELSE '미등록'
+                END AS Whether
+        FROM TB_CA630
+        WHERE indate = #{gs_today} AND lotno = #{code88};
+    </select>
+
 </mapper>

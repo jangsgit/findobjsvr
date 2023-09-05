@@ -341,4 +341,15 @@ public class ThemoonAppService {
         return (queryReusult > 0);
 
     }
+
+
+    public List<ThemoonListDto2> tb_ca630_check(PopDto parm){
+        String dbnm = parm.getDbnm();
+        switch (dbnm){
+            case "ERP_THEMOON":
+                return TheMoonDBMapper.tb_ca630_check(parm);
+            default:
+                return null;
+        }
+    }
 }
