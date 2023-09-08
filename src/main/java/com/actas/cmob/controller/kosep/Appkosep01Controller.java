@@ -148,6 +148,10 @@ public class Appkosep01Controller {
         for ( var item : listBarcode) {
             popDto.setFdeldate(popDto.getFdeldate());
             popDto.setLotno(item);
+//            log.info("item");
+//            log.info(item);
+//            log.info(popDto.getFdeldate());
+//            log.info(popDto.getFdelnum());
             queryResult = authService.UpdateDA006PANNEL(popDto);
             if(queryResult < 1){
                 queryResult = 0;
