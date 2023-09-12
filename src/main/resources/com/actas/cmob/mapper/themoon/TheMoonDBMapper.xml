@@ -331,6 +331,7 @@
           AND (TB_FPLAN.cltcd = TB_XCLIENT.cltcd)
           AND (TB_FPLAN.custcd = TB_CA501.phm_cust)
           AND (TB_FPLAN.pcode = TB_CA501.phm_pcod)
+          AND (TB_FPLAN.decision = '0')
           AND (TB_FPLAN_WORK.custcd = 'THEMOON')
           AND (TB_FPLAN_WORK.spjangcd = 'ZZ')
           AND (TB_FPLAN_WORK.wseq = '01')
