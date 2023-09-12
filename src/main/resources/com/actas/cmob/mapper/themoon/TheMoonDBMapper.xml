@@ -309,7 +309,8 @@
         ISNULL(phm_unit, '') as phm_unit,
         ISNULL(code88, '')   as code88
         from tb_ca501
-        where phm_cust = 'THEMOON' and code88 = #{code88}
+        where phm_cust = 'THEMOON' and code88 = '8804712021351'
+
 
     </select>
 
@@ -405,7 +406,7 @@
             custcd, spjangcd, plan_no, wseq, wflag, seq, pcode, lotno, store, wotdt, wqty, bqty, qty, styn, indate, inperid
         ) VALUES
         (
-               'THEMOON', 'ZZ', #{plan_no}, '03', '00030', '001', #{pcode}, #{lotno}, 'P01', #{gs_today}, #{wotqt}, 0, #{wotqt}, '1', #{gs_today}, #{close_perid}
+               'THEMOON', 'ZZ', #{plan_no}, '03', '00030', '01', #{pcode}, #{lotno}, 'P01', #{gs_today}, #{wotqt}, 0, #{wotqt}, '1', #{gs_today}, #{close_perid}
         )
     </insert>
 

@@ -230,7 +230,15 @@ public class Appthemoon01Controller {
 
         String ls_dbnm = "";
 
-        String time = "";
+        Date now = new Date();
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+
+        String formattedDate = dateFormat.format(now);
+
+
+        String time = formattedDate;
+
 
         String dbnm = data.get("dbnm").toString();
         String closePerid = data.get("close_perid").toString();
