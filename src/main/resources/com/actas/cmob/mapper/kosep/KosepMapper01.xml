@@ -57,11 +57,11 @@
 
     <select id="GetPcodeDataList02" parameterType="com.actas.cmob.DTO.Kosep.KosepPopDto"  resultType="com.actas.cmob.DTO.Kosep.KosepPopDto">
         <![CDATA[
-        select isnull(A.color,'') as color, isnull(A.grade,'') as grade, isnull(A.thick, 0) as thick, isnull(A.width,0) as width,   isnull(A.pcode, '') as pcode
+        select isnull(A.color,'') as color, isnull(A.grade,'') as grade, isnull(A.thick, 0) as thick, isnull(A.width,0) as width,isnull(A.pcode, '') as pcode, isnull(A.wbdate, '') as wbdate, isnull(A.wbnum, '') as wbnum, isnull(A.wbseq, '') as wbseq
         from (
-                 select top 1 color, grade, thick, width,   pcode from TB_DA006_IMPORT_PANNEL WHERE  isnull(trim(store),'')    = #{store} and itemcd = #{itemcd}
+                 select top 1 color, grade, thick, width, pcode, pndate as wbdate, pnnum as wbnum, pnseq as wbseq from TB_DA006_IMPORT_PANNEL WHERE  isnull(trim(store),'')    = #{store} and itemcd = #{itemcd}
                  union
-                 select top 1 color, grade, thick, width,   pcode from TB_DA006_IMPORT_WINGBADY WHERE   isnull(trim(store),'')    = #{store} and itemcd = #{itemcd}
+                 select top 1 color, grade, thick, width, pcode, wbdate, wbnum, wbseq from TB_DA006_IMPORT_WINGBADY WHERE   isnull(trim(store),'')    = #{store} and itemcd = #{itemcd}
              ) A
         ]]>
     </select>
@@ -241,8 +241,8 @@
 
 
     <insert id="InsertCA636" parameterType="com.actas.cmob.DTO.Kosep.KosepCa636Dto" >
-        insert into tb_ca636 (custcd, spjangcd, movdate, movnum, movseq, pcode, lotno, grade, thick,width, color, indate, inperid) values
-            (#{custcd}, #{spjangcd},  #{movdate}, #{movnum}, #{movseq}, #{pcode}, #{lotno}, #{grade}, #{thick},#{width},  #{color}, #{indate}, #{inperid})
+        insert into tb_ca636 (custcd, spjangcd, movdate, movnum, movseq, pcode, lotno, grade, thick,width, color, indate, inperid, wbdate, wbnum, wbseq) values
+            (#{custcd}, #{spjangcd},  #{movdate}, #{movnum}, #{movseq}, #{pcode}, #{lotno}, #{grade}, #{thick},#{width},  #{color}, #{indate}, #{inperid}, #{wbdate}, #{wbnum}, #{wbseq})
     </insert>
 
     <delete id="DeleteCA635" parameterType="com.actas.cmob.DTO.Kosep.KosepCa635Dto">
@@ -390,6 +390,7 @@
         update TB_DA006_IMPORT_PANNEL
         set fdeldate = #{fdeldate},
             fdelnum  = #{fdelnum},
+            fdelseq  = #{fdelseq},
             fdelchk='Y'
         where itemcd = #{lotno}
     </update>
@@ -398,6 +399,7 @@
         update TB_DA006_IMPORT_WINGBADY
         set fdeldate = #{fdeldate},
             fdelnum  = #{fdelnum},
+            fdelseq  = #{fdelseq},
             fdelchk='Y'
         where itemcd = #{lotno}
     </update>

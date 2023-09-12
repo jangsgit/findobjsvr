@@ -148,6 +148,9 @@ public class Appkosep01Controller {
         for ( var item : listBarcode) {
             popDto.setFdeldate(popDto.getFdeldate());
             popDto.setLotno(item);
+            if(popDto.getFdelnum().equals("0000")){
+                popDto.setFdelseq("000");
+            }
 //            log.info("item");
 //            log.info(item);
 //            log.info(popDto.getFdeldate());
@@ -397,6 +400,9 @@ public class Appkosep01Controller {
             Ca636Dto.setColor(popDto.getColor());
             Ca636Dto.setIndate(getToDate());
             Ca636Dto.setInperid(ls_perid);
+            Ca636Dto.setWbdate(popDto.getWbdate());
+            Ca636Dto.setWbnum(popDto.getWbnum());
+            Ca636Dto.setWbseq(popDto.getWbseq());
             ls_moveseq = ll_movenum.toString();
             if (ls_moveseq.length() == 1){
                 ls_moveseq = "00" + ls_moveseq;

@@ -24,4 +24,8 @@ public class KosepCa636Dto {
     private String inperid;
     private String itemcd;
     private String chulstore;
+    private String wbdate;
+    private String wbnum;
+    private String wbseq;
+
 }

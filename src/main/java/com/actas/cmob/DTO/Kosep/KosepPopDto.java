@@ -36,4 +36,10 @@ public class KosepPopDto {
     private String pcode;
     private String chulstore;
     private String ipstore;
+    private String wbdate;
+    private String wbnum;
+    private String wbseq;
+    private String pndate;
+    private String pnnum;
+    private String pnseq;
 }
