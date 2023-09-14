@@ -309,7 +309,7 @@
         ISNULL(phm_unit, '') as phm_unit,
         ISNULL(code88, '')   as code88
         from tb_ca501
-        where phm_cust = 'THEMOON' and code88 = '8804712021351'
+        where phm_cust = 'THEMOON' and code88 = #{code}
 
 
     </select>
