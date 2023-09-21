@@ -10,7 +10,7 @@
     </select>
 
     <select id="GetTBDA035List" parameterType="com.actas.cmob.DTO.Kosep.KosepPopDto"  resultType="com.actas.cmob.DTO.Kosep.KosepList01Dto">
-        select  A.custcd AS custcd, A.spjangcd as spjangcd, B.cltcd as cltcd,
+        select  A.custcd AS custcd, A.spjangcd as spjangcd, B.cltcd as cltcd, isnull(A.remark, '') as remark,
                 substring(A.fdeldate, 5,2) + '/' + substring(A.fdeldate, 7,2) as fdeldatetext, A.fdeldate  as fdeldate,
                 A.fdelnum as fdelnum, A.fdelseq as fdelseq, isnull(A.pcode,'') as pcode, isnull(D.phm_pnam,'') as pname,
                 isnull(A.grade,'') as grade, isnull(A.width,0) as width, isnull(A.thick,0) as thick,
@@ -19,6 +19,8 @@
         from TB_DA035 A WITH (NOLOCK) , TB_DA034 B WITH (NOLOCK) , TB_XCLIENT C WITH (NOLOCK) , TB_CA501 D WITH (NOLOCK)
         where A.spjangcd = B.spjangcd and A.fdeldate = B.fdeldate and A.fdelnum=B.fdelnum
            AND B.cltcd = C.cltcd and A.pcode = D.phm_pcod and  A.fdeldate = #{todate} and ( Len(isnull(A.deldate , '')) = 0)
+           AND A.fdeldate + A.fdelnum + A.fdelseq NOT in (SELECT CONVERT(CHAR(8), fdeldate, 112) + fdelnum + fdelseq from TB_DA006_IMPORT_WINGBADY WITH (NOLOCK) WHERE fdelchk = 'Y')
+          AND A.fdeldate + A.fdelnum + A.fdelseq  NOT in (SELECT CONVERT(CHAR(8), fdeldate, 112) + fdelnum + fdelseq from TB_DA006_IMPORT_PANNEL  WITH (NOLOCK) WHERE fdelchk = 'Y')
     </select>
 
 
@@ -63,6 +65,16 @@
                  union
                  select top 1 color, grade, thick, width, pcode, wbdate, wbnum, wbseq from TB_DA006_IMPORT_WINGBADY WHERE   isnull(trim(store),'')    = #{store} and itemcd = #{itemcd}
              ) A
+        ]]>
+    </select>
+
+
+    <select id="GetPcodeDataList03" parameterType="com.actas.cmob.DTO.Kosep.KosepPopDto"  resultType="com.actas.cmob.DTO.Kosep.KosepPopDto">
+        <![CDATA[
+            select '0' as deldefault , itemcd  from TB_DA006_IMPORT_PANNEL WITH (NOLOCK) WHERE   itemcd = #{itemcd}
+            UNION ALL
+            select  isnull(deldefault, '0') as deldefault, itemcd from TB_DA006_IMPORT_WINGBADY WITH (NOLOCK) WHERE   itemcd = #{itemcd}
+
         ]]>
     </select>
 

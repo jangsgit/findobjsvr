@@ -26,6 +26,7 @@ public class KosepList01Dto {
     private String grade;
     private String cltnm;
     private String lotno;
+    private String remark;
     private int delcqty;
     private Long deluamt;
     private Long delsamt;

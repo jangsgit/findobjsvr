@@ -18,6 +18,7 @@ public interface KosepDBMapper {
     public List<KosepPopDto> GetTBCA510IpStoreList(KosepPopDto parm);
     public  List<KosepPopDto> GetPcodeDataList(KosepPopDto parm);
     public  KosepPopDto GetPcodeDataList02(KosepPopDto parm);
+    public  KosepPopDto GetPcodeDataList03(KosepPopDto parm);
 
     public List<KosepList01Dto> GetTBDA035ChulList(KosepPopDto parm) ;
     public List<KosepList01Dto> GetTBDA037ChulList(KosepPopDto parm) ;

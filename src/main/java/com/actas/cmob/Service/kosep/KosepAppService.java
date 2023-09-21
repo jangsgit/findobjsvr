@@ -58,6 +58,7 @@ public class KosepAppService {
         }
 
     }
+
     public  List<KosepCa636Dto> GetTBCA635MoveList(KosepCa636Dto parm){
           return kosepMapper.GetTBCA635MoveList(parm);
     }
@@ -66,6 +67,18 @@ public class KosepAppService {
 
     public  KosepPopDto GetPcodeDataList02(KosepPopDto parm){
         return kosepMapper.GetPcodeDataList02(parm);
+
+    }
+
+    public  KosepPopDto GetPcodeDataList03(KosepPopDto parm){
+        String dbnm = parm.getDbnm();
+        switch (dbnm){
+            case "ERP_KOSEP":
+                return kosepMapper.GetPcodeDataList03(parm);
+            default:
+                return null;
+
+        }
 
     }
 

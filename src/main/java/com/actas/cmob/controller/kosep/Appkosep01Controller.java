@@ -23,6 +23,7 @@ import java.util.*;
 public class Appkosep01Controller {
     protected Log log =  LogFactory.getLog(this.getClass());
     KosepPopDto popDto = new KosepPopDto();
+    KosepPopDto DeFpopDto = new KosepPopDto();
     KosepCa635Dto Ca635Dto = new KosepCa635Dto();
     List<KosepCa636Dto> Ca636ListDto = new ArrayList<>();
     KosepCa636Dto Ca636Dto = new KosepCa636Dto();
@@ -558,6 +559,44 @@ public class Appkosep01Controller {
         log.info(popDtoList);
         return popDtoList;
     }
+
+    // 바코드로 Default 수량 체크
+    @RequestMapping(value="/list01pcode",method = RequestMethod.POST,
+            headers = ("content-type=multipart/*"),
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public Object Appcom01Pcode_index(@RequestParam Map<String, String> param
+            , Model model
+            , HttpServletRequest request) throws Exception{
+        param.forEach((key, values) -> {
+            switch (key){
+                case "dbnm":
+                    popDto.setDbnm(values.toString());
+                    break;
+                case "barcode":
+                    popDto.setItemcd(values.toString());
+                    break;
+                default:
+                    break;
+            }
+        });
+        DeFpopDto = authService.GetPcodeDataList03(popDto);
+        if( DeFpopDto == null){
+            log.info("NULL  NULL  NULL  NULL");
+            popDto.setDeldefault("0");
+            popDto.setItemcd("NULL");
+        }else{
+            log.info("NOT  NULL");
+            popDto.setDeldefault(DeFpopDto.getDeldefault());
+            popDto.setItemcd(DeFpopDto.getItemcd());
+        }
+        log.info("==================");
+        log.info(popDto.getDeldefault());
+        log.info("==================");
+        log.info(popDto);
+        return popDto;
+    }
+
+
 
     // 재고 이동현황
     @RequestMapping(value="/list04",method = RequestMethod.POST,

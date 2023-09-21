@@ -42,4 +42,5 @@ public class KosepPopDto {
     private String pndate;
     private String pnnum;
     private String pnseq;
+    private String deldefault;
 }
