@@ -151,6 +151,7 @@ public class Appkosep01Controller {
             popDto.setLotno(item);
             if(popDto.getFdelnum().equals("0000")){
                 popDto.setFdelseq("000");
+                popDto.setFdelcltcd("1001");
             }
 //            log.info("item");
 //            log.info(item);

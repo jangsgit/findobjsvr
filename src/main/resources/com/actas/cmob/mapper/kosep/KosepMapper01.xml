@@ -403,6 +403,7 @@
         set fdeldate = #{fdeldate},
             fdelnum  = #{fdelnum},
             fdelseq  = #{fdelseq},
+            delcltcd  = #{fdelcltcd},
             fdelchk='Y'
         where itemcd = #{lotno}
     </update>
@@ -412,6 +413,7 @@
         set fdeldate = #{fdeldate},
             fdelnum  = #{fdelnum},
             fdelseq  = #{fdelseq},
+            delcltcd  = #{fdelcltcd},
             fdelchk='Y'
         where itemcd = #{lotno}
     </update>
