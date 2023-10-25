@@ -558,4 +558,113 @@
         WHERE indate = #{gs_today} AND lotno = #{code88};
     </select>
 
+    <select id="GetContnmList" parameterType="com.actas.cmob.DTO.Themoon.PopDto" resultType="com.actas.cmob.DTO.Themoon.PopDto">
+        <![CDATA[
+            SELECT ISNULL(sortno, '') AS sortno,
+                   ISNULL(hcod, '') AS hcod,
+                   ISNULL(hnam, '') AS hnam
+            FROM TB_CLTCD WITH(NOLOCK)
+            ]]>
+    </select>
+
+    <select id="GetMidList" parameterType="com.actas.cmob.DTO.Themoon.PopDto" resultType="com.actas.cmob.DTO.Themoon.PopDto">
+        select isnull(bgroup, '') as bgroup, isnull(bgrpnm, '') as bgrpnm
+        from TB_CLTCD_01 WITH(NOLOCK)
+        WHERE hcod = #{hcod}
+    </select>
+
+    <select id="GetPerList" parameterType="com.actas.cmob.DTO.Themoon.PopDto" resultType="com.actas.cmob.DTO.Themoon.PopDto">
+        select isnull(spjangnm, '') as spjangnm, isnull(spjangcd, '') as spjangcd
+        from TB_XA012 WITH(NOLOCK)
+    </select>
+
+    <select id="cltnmList"  parameterType="com.actas.cmob.DTO.Themoon.PopDto" resultType="com.actas.cmob.DTO.Themoon.PopDto">
+        select isnull(cltcd, '') as cltcd, isnull(cltnm, '') as cltnm
+        from TB_XCLIENT where cltnm like CONCAT('%',#{cltnm},'%')
+    </select>
+
+    <select id="Get_DA036_PROC" parameterType="com.actas.cmob.DTO.Themoon.PopDto" resultType="com.actas.cmob.DTO.Themoon.DA036Dto">
+        {
+            call SP_TB_DA036_05('THEMOON', 'ZZ', #{PS_FDATE}, #{PS_TDATE}, #{PS_JFDATE}, #{PS_JTDATE}, #{PS_SPCD}, #{PS_AREA}, #{PS_CLTCD}, #{PS_COMCD})
+        }
+    </select>
+
+    <select id="GETDATE_PROC" parameterType="com.actas.cmob.DTO.Themoon.PopDto" resultType="com.actas.cmob.DTO.Themoon.PopDto">
+        SELECT CONVERT(CHAR(08), DATEADD(YEAR, -1, CONVERT(DATETIME, #{frdate})), 112) as jfrdate,
+               CONVERT(CHAR(08), DATEADD(YEAR, -1, CONVERT(DATETIME, #{todate})), 112) as jtodate
+        from dual
+
+    </select>
+
+    <select id="Get_DA099_PROC" parameterType="com.actas.cmob.DTO.Themoon.PopDto" resultType="com.actas.cmob.DTO.Themoon.DA099Dto">
+        {
+            call SP_TB_DA099_02('THEMOON', 'ZZ', #{PS_FDATE}, #{PS_TDATE}, #{PS_CLTCD}, #{PS_COMCD})
+        }
+    </select>
+
+    <select id="storelist"  parameterType="com.actas.cmob.DTO.Themoon.PopDto" resultType="com.actas.cmob.DTO.Themoon.PopDto">
+        select isnull(store, '') as store, isnull(storenm, '') as storenm from TB_CA504
+    </select>
+
+    <select id="pgunlist" parameterType="com.actas.cmob.DTO.Themoon.PopDto" resultType="com.actas.cmob.DTO.Themoon.PopDto">
+        <![CDATA[
+            select code, cnam, cord from vw_ca510_002 where code <> '00'
+                                                                ]]>
+    </select>
+
+
+    <select id="agrdlist" parameterType="com.actas.cmob.DTO.Themoon.PopDto" resultType="com.actas.cmob.DTO.Themoon.PopDto">
+        SELECT DISTINCT TB_CA503.hcod, TB_CA503.hnam, TB_CA503.sortno, TB_CA503.pgun
+        from tb_ca503 with(nolock)
+        where (TB_CA503.pgun like CONCAT('%',#{pgun3},'%'))
+
+    </select>
+
+    <select id="pnamelist" parameterType="com.actas.cmob.DTO.Themoon.PopDto" resultType="com.actas.cmob.DTO.Themoon.PopDto">
+        select isnull(phm_pcod,'')as phm_pcod , isnull(phm_pnam, '') as phm_pnam, isnull(phm_size, '') as phm_size
+        from TB_CA501
+        where phm_pnam like concat('%',#{phm_pnam},'%')
+    </select>
+
+    <select id="bgrdlist" parameterType="com.actas.cmob.DTO.Themoon.PopDto" resultType="com.actas.cmob.DTO.Themoon.PopDto">
+        SELECT bgroup, bgrpnm, sortno
+        from TB_CA503_01 with(nolock)
+        where pgun like CONCAT('%', #{pgun2}, '%')
+          and   hcod like CONCAT('%', #{hcod2}, '%')
+
+    </select>
+
+    <select id="Get_CA602_01_PROC" parameterType="com.actas.cmob.DTO.Themoon.PopDto" resultType="com.actas.cmob.DTO.Themoon.CA501Dto">
+        {
+            call SP_TB_CA602_01('THEMOON', 'ZZ', #{PS_STORE}, #{PS_PGUN}, #{PS_AGRB}, #{PS_BGRB} ,'%', '%', '%', #{PS_PCODE},
+                #{PS_SDATE}, #{PS_TODAY})
+            }
+    </select>
+
+    <select id="Get_date_proc" parameterType="com.actas.cmob.DTO.Themoon.PopDto" resultType="com.actas.cmob.DTO.Themoon.PopDto">
+        {
+            call gf_ca601_enddate(#{gs_today}, #{ls_store}, #{ls_pcode})
+        }
+    </select>
+
+    <select id="TB_JC002" parameterType="com.actas.cmob.DTO.Themoon.PopDto" resultType="com.actas.cmob.DTO.Themoon.PopDto">
+        <![CDATA[
+        SELECT TB_JC002.CUSTCD,
+        TB_JC002.DIVICD,
+        TB_JC002.DIVINM
+        FROM TB_JC002 WITH(NOLOCK)
+        WHERE TB_JC002.kukcd   = '03'
+        AND TB_JC002.divicd <> 'CC00030'
+        ]]>
+    </select>
+
+
+    <select id="SP_PLAN_WORK_DIVI" parameterType="com.actas.cmob.DTO.Themoon.PopDto" resultType="com.actas.cmob.DTO.Themoon.DIVICDDto">
+            {
+            call SP_PLAN_WORK_DIVI('THEMOON', 'ZZ', #{PS_FDATE}, #{PS_TDATE},#{PS_DIVICD}, 'P01', #{PS_SDATE})
+            }
+    </select>
+
+
+
 </mapper>

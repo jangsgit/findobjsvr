@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @RequiredArgsConstructor
-@MapperScan(value = {"com.actas.cmob.Mapper.CA609"})
+//@MapperScan(value = {"com.actas.cmob.Mapper.CA609"})
 @Service("CA609Service")
 public class CA609Service {
     @Autowired

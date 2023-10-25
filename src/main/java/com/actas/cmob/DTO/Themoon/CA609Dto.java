@@ -25,7 +25,7 @@ public class CA609Dto {
     private String remark;
     private String ibgflag;
     private String qcflag;
-    private int qcqty;
+    private Integer qcqty;
     private String ibgqty;
     private String pumdate;
     private String pumnum;

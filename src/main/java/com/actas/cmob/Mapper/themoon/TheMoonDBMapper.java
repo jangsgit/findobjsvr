@@ -1,10 +1,7 @@
 package com.actas.cmob.Mapper.themoon;
 
 import com.actas.cmob.DTO.Kosep.*;
-import com.actas.cmob.DTO.Themoon.LoginLogDto;
-import com.actas.cmob.DTO.Themoon.PopDto;
-import com.actas.cmob.DTO.Themoon.ThemoonListDto;
-import com.actas.cmob.DTO.Themoon.ThemoonListDto2;
+import com.actas.cmob.DTO.Themoon.*;
 import com.actas.cmob.DTO.UserFormDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -111,6 +108,58 @@ public interface TheMoonDBMapper {
     public int delete_tb_fplan_sub(PopDto parm);
 
     public List<ThemoonListDto2> tb_ca630_check(PopDto parm);
+
+    public List<PopDto> GetContnmList(PopDto parm);
+
+    public List<PopDto> GetMidList(PopDto parm);
+
+    public List<PopDto> GetPerList(PopDto parm);
+
+
+    public List<PopDto> cltnmList(PopDto parm);
+
+    public List<DA036Dto> Get_DA036_PROC(PopDto parm);
+
+    public List<PopDto> GETDATE_PROC(PopDto parm);
+
+    public List<DA099Dto> Get_DA099_PROC(PopDto parm);
+
+    public List<PopDto> storelist(PopDto parm);
+
+    public List<PopDto> pgunlist(PopDto parm);
+
+
+
+    public List<PopDto> agrdlist(PopDto parm);
+
+    public List<PopDto> pnamelist(PopDto parm);
+
+
+
+    public List<PopDto> bgrdlist(PopDto parm);
+
+    public List<CA602_01> Get_CA602_01_PROC(PopDto parm);
+
+
+    public List<PopDto> Get_date_proc(PopDto parm);
+
+
+    public List<PopDto> TB_JC002(PopDto parm);
+
+
+
+
+    public List<DIVICDDto> SP_PLAN_WORK_DIVI(PopDto parm);
+
+
+
+
+
+
+
+
+
+
 
 
 

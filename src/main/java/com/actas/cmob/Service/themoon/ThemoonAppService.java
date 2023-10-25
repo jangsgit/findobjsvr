@@ -3,10 +3,7 @@ package com.actas.cmob.Service.themoon;
 
 import com.actas.cmob.DTO.Kosep.KosepList01Dto;
 import com.actas.cmob.DTO.Kosep.KosepPopDto;
-import com.actas.cmob.DTO.Themoon.LoginLogDto;
-import com.actas.cmob.DTO.Themoon.PopDto;
-import com.actas.cmob.DTO.Themoon.ThemoonListDto;
-import com.actas.cmob.DTO.Themoon.ThemoonListDto2;
+import com.actas.cmob.DTO.Themoon.*;
 import com.actas.cmob.Mapper.themoon.TheMoonDBMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -352,4 +349,184 @@ public class ThemoonAppService {
                 return null;
         }
     }
+
+
+
+    public List<PopDto> GetContnmList(PopDto parm){
+        String dbnm = parm.getDbnm();
+        switch (dbnm){
+            case "ERP_THEMOON":
+                return TheMoonDBMapper.GetContnmList(parm);
+            default:
+                return null;
+        }
+    }
+
+    public List<PopDto> GetMidList(PopDto parm){
+        String dbnm = parm.getDbnm();
+        switch (dbnm){
+            case "ERP_THEMOON":
+                return TheMoonDBMapper.GetMidList(parm);
+            default:
+                return null;
+        }
+    }
+
+    public List<PopDto> GetPerList(PopDto parm){
+        String dbnm = parm.getDbnm();
+        switch (dbnm){
+            case "ERP_THEMOON":
+                return TheMoonDBMapper.GetPerList(parm);
+            default:
+                return null;
+        }
+
+    }
+
+    public List<PopDto> cltnmList(PopDto parm){
+        String dbnm = parm.getDbnm();
+        switch (dbnm){
+            case "ERP_THEMOON":
+                return TheMoonDBMapper.cltnmList(parm);
+            default:
+                return null;
+        }
+    }
+
+    public List<DA036Dto> Get_DA036_PROC(PopDto parm)
+    {
+        String dbnm = parm.getDbnm();
+        switch (dbnm){
+            case "ERP_THEMOON":
+                return TheMoonDBMapper.Get_DA036_PROC(parm);
+            default:
+                return null;
+        }
+    }
+
+    public List<PopDto> GETDATE_PROC(PopDto parm){
+        String dbnm = parm.getDbnm();
+        switch (dbnm){
+            case "ERP_THEMOON":
+                return TheMoonDBMapper.GETDATE_PROC(parm);
+            default:
+                return null;
+        }
+    }
+
+    public List<DA099Dto> Get_DA099_PROC(PopDto parm){
+        String dbnm = parm.getDbnm();
+        switch (dbnm){
+            case "ERP_THEMOON":
+                return TheMoonDBMapper.Get_DA099_PROC(parm);
+            default:
+                return null;
+        }
+    }
+
+
+
+    public List<PopDto> storelist(PopDto parm){
+        String dbnm = parm.getDbnm();
+        switch (dbnm){
+            case "ERP_THEMOON":
+                return TheMoonDBMapper.storelist(parm);
+            default:
+                return null;
+        }
+
+    }
+
+
+
+    public List<PopDto> pgunlist(PopDto parm){
+        String dbnm = parm.getDbnm();
+        switch (dbnm){
+            case "ERP_THEMOON":
+                return TheMoonDBMapper.pgunlist(parm);
+            default:
+                return null;
+        }
+
+    }
+
+
+    public List<PopDto> agrdlist(PopDto parm){
+        String dbnm = parm.getDbnm();
+        switch (dbnm){
+            case "ERP_THEMOON":
+                return TheMoonDBMapper.agrdlist(parm);
+            default:
+                return null;
+        }
+
+    }
+
+    public List<PopDto> pnamelist(PopDto parm){
+        String dbnm = parm.getDbnm();
+        switch (dbnm){
+            case "ERP_THEMOON":
+                return TheMoonDBMapper.pnamelist(parm);
+            default:
+                return null;
+        }
+
+    }
+
+    public List<PopDto> bgrdlist(PopDto parm){
+        String dbnm = parm.getDbnm();
+        switch (dbnm){
+            case "ERP_THEMOON":
+                return TheMoonDBMapper.bgrdlist(parm);
+            default:
+                return null;
+        }
+
+    }
+
+
+    public List<CA602_01> Get_CA602_01_PROC(PopDto parm){
+        String dbnm = parm.getDbnm();
+        switch (dbnm){
+            case "ERP_THEMOON":
+                return TheMoonDBMapper.Get_CA602_01_PROC(parm);
+            default:
+                return null;
+        }
+
+    }
+
+    public List<PopDto> Get_date_proc(PopDto parm){
+        String dbnm = parm.getDbnm();
+        switch (dbnm){
+            case "ERP_THEMOON":
+                return TheMoonDBMapper.Get_date_proc(parm);
+            default:
+                return null;
+        }
+    }
+
+
+    public List<PopDto> TB_JC002(PopDto parm){
+        String dbnm = parm.getDbnm();
+        switch (dbnm){
+            case "ERP_THEMOON":
+                return TheMoonDBMapper.TB_JC002(parm);
+            default:
+                return null;
+        }
+    }
+
+
+    public List<DIVICDDto> SP_PLAN_WORK_DIVI(PopDto parm){
+        String dbnm = parm.getDbnm();
+        switch (dbnm){
+            case "ERP_THEMOON":
+                return TheMoonDBMapper.SP_PLAN_WORK_DIVI(parm);
+            default:
+                return null;
+        }
+    }
+
 }
+
