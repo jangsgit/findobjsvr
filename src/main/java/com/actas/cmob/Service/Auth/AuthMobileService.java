@@ -1,8 +1,7 @@
 package com.actas.cmob.Service.Auth;
 
 import com.actas.cmob.DTO.UserFormDto;
-import com.actas.cmob.Mapper.Kosep.KosepDBMapper;
-import com.actas.cmob.Mapper.themoon.TheMoonDBMapper;
+import com.actas.cmob.Mapper.Daegun.DaegunDBMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,26 +10,12 @@ import org.springframework.stereotype.Service;
 @Service("AuthMobileService")
 public class AuthMobileService {
     @Autowired
-    KosepDBMapper kosepMapper;
-
-    @Autowired
-    TheMoonDBMapper theMoonDBMapper;
+    DaegunDBMapper daegunMapper;
 
     public UserFormDto GetUserInfo(UserFormDto parm){
-        String dbnm = parm.getDbnm();
-        switch (dbnm){
-            case "ERP_KOSEP":
-                return kosepMapper.GetUserInfo(parm);
-            case "ERP_THEMOON":
-                return theMoonDBMapper.GetUserInfo(parm);
-            default:
-                return null;
-
-        }
+        return daegunMapper.GetUserInfo(parm);
 
     }
-
-
 
 
 }

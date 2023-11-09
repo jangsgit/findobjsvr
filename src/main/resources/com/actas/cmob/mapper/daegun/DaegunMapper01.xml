@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- mapper >> interface 매핑 : id 값 중요 (interface 메소드) -->
+<mapper namespace="com.actas.cmob.Mapper.Daegun.DaegunDBMapper">
+
+    <select id="GetUserInfo" parameterType="com.actas.cmob.DTO.UserFormDto"  resultType="com.actas.cmob.DTO.UserFormDto">
+        select top 1 userid, passwd1,  custcd, custnm, pernm, useyn
+        from TB_XUSERS where userid=#{userid} and passwd1=#{passwd1}
+    </select>
+
+
+</mapper>
