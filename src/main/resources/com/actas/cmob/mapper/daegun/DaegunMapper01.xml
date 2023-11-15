@@ -10,4 +10,27 @@
     </select>
 
 
+    <insert id="InsertXusers" parameterType="com.actas.cmob.DTO.Daegun.DaegunXusers" >
+        insert into TB_XUSERS (custcd, userid, passwd1, passwd2, emailtxt, pernm, custnm, useyn) values
+        (#{custcd}, #{userid},  #{passwd1}, #{passwd2}, #{emailtxt}, #{pernm}, #{custnm}, #{useyn})
+    </insert>
+
+
+    <insert id="InsertItem" parameterType="com.actas.cmob.DTO.Daegun.DaegunItemList" >
+        insert into TB_ITEMLIST (custcd, inputdate, itemsubject, pernm, itemmemo, flag, location) values
+        (#{custcd}, #{inputdate},  #{itemsubject}, #{pernm}, #{itemmemo}, #{flag}, #{location} )
+    </insert>
+
+
+
+    <select id="GetItemList" parameterType="com.actas.cmob.DTO.Daegun.DaegunItemList"  resultType="com.actas.cmob.DTO.Daegun.DaegunItemList">
+        <![CDATA[
+        select  A.custcd, substring(A.inputdate, 0,5) + '-' + substring(A.inputdate, 5,2) + '-' + substring(A.inputdate, 7,2) as inputdate,
+               A.itemsubject, isnull(A.pernm, '') as pernm, A.itemmemo, A.flag, isnull(A.location, '') as location,
+               (case A.flag  when '001' then '분실' when '002' then '습득' else '' end ) as flagnm
+        from TB_ITEMLIST A WITH (NOLOCK)
+        where A.custcd = #{custcd} and A.itemsubject like CONCAT('%',#{itemsubject},'%')
+        ORDER BY A.seq desc , A.inputdate, A.itemsubject
+        ]]>
+    </select>
 </mapper>

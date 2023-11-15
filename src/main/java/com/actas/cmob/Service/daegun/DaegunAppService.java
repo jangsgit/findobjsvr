@@ -1,6 +1,11 @@
 package com.actas.cmob.Service.daegun;
 
+import com.actas.cmob.DTO.Daegun.DaegunItemList;
+import com.actas.cmob.DTO.Daegun.DaegunXusers;
 import com.actas.cmob.DTO.Kosep.*;
+import com.actas.cmob.DTO.Themoon.PopDto;
+import com.actas.cmob.DTO.Themoon.ThemoonListDto;
+import com.actas.cmob.Mapper.Daegun.DaegunDBMapper;
 import com.actas.cmob.Mapper.Kosep.KosepDBMapper;
 import com.actas.cmob.Mapper.themoon.TheMoonDBMapper;
 import lombok.RequiredArgsConstructor;
@@ -14,13 +19,37 @@ import java.util.List;
 @Service("DaegunAppService")
 public class DaegunAppService {
     @Autowired
-    KosepDBMapper kosepMapper;
+    DaegunDBMapper daegunMapper;
+
+
+    public int InsertXusers(DaegunXusers parm) {
+        int queryResult = 1;
+
+
+        queryResult = daegunMapper.InsertXusers(parm);
+        if (queryResult < 1) {
+            queryResult = 0;
+        }
+        return queryResult;
+    }
+
+
+    public int InsertItem(DaegunItemList parm) {
+        int queryResult = 1;
+
+
+        queryResult = daegunMapper.InsertItem(parm);
+        if (queryResult < 1) {
+            queryResult = 0;
+        }
+        return queryResult;
+    }
 
 
 
-
-
-
+    public List<DaegunItemList> GetItemList(DaegunItemList parm){
+                return daegunMapper.GetItemList(parm);
+    }
 
 
 }
