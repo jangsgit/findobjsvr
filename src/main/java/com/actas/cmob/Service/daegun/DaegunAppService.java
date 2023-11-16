@@ -46,6 +46,29 @@ public class DaegunAppService {
     }
 
 
+    public int UpdateItem(DaegunItemList parm) {
+        int queryResult = 1;
+
+
+        queryResult = daegunMapper.UpdateItem(parm);
+        if (queryResult < 1) {
+            queryResult = 0;
+        }
+        return queryResult;
+    }
+
+
+    public int DeleteItem(DaegunItemList parm) {
+        int queryResult = 1;
+
+
+        queryResult = daegunMapper.DeleteItem(parm);
+        if (queryResult < 1) {
+            queryResult = 0;
+        }
+        return queryResult;
+    }
+
 
     public List<DaegunItemList> GetItemList(DaegunItemList parm){
                 return daegunMapper.GetItemList(parm);

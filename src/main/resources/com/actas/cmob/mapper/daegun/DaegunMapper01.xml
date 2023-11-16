@@ -22,10 +22,19 @@
     </insert>
 
 
+    <update id="UpdateItem" parameterType="com.actas.cmob.DTO.Daegun.DaegunItemList" >
+        update TB_ITEMLIST set inputdate = #{inputdate}, itemsubject = #{itemsubject}, pernm =#{pernm}, itemmemo =#{itemmemo}, flag =#{flag}, location =#{location}
+        where seq = #{seq}
+    </update>
+
+
+    <delete id="DeleteItem" parameterType="com.actas.cmob.DTO.Daegun.DaegunItemList" >
+        delete from TB_ITEMLIST  where seq = #{seq}
+    </delete>
 
     <select id="GetItemList" parameterType="com.actas.cmob.DTO.Daegun.DaegunItemList"  resultType="com.actas.cmob.DTO.Daegun.DaegunItemList">
         <![CDATA[
-        select  A.custcd, substring(A.inputdate, 0,5) + '-' + substring(A.inputdate, 5,2) + '-' + substring(A.inputdate, 7,2) as inputdate,
+        select  A.seq, A.custcd, substring(A.inputdate, 0,5) + '-' + substring(A.inputdate, 5,2) + '-' + substring(A.inputdate, 7,2) as inputdate,
                A.itemsubject, isnull(A.pernm, '') as pernm, A.itemmemo, A.flag, isnull(A.location, '') as location,
                (case A.flag  when '001' then '분실' when '002' then '습득' else '' end ) as flagnm
         from TB_ITEMLIST A WITH (NOLOCK)

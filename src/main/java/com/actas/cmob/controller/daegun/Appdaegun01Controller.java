@@ -133,6 +133,90 @@ public class Appdaegun01Controller {
         return "SUCCESS";
     }
 
+
+    @RequestMapping(value="/itemupdate",method = RequestMethod.POST,
+            headers = ("content-type=multipart/*"),
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public Object Appcom01ItemUpdate_index(@RequestParam Map<String, String> param
+            , Model model
+            , HttpServletRequest request) throws Exception {
+        String ls_inputdate = "";
+        param.forEach((key, values) -> {
+            switch (key) {
+                case "custcd":
+                    itemData.setCustcd(values.toString());
+                    break;
+                case "inputdate":
+                    itemData.setInputdate(values.toString());
+                    break;
+                case "subject":
+                    itemData.setItemsubject(values.toString());
+                    break;
+                case "itemmemo":
+                    itemData.setItemmemo(values.toString());
+                    break;
+                case "flag":
+                    itemData.setFlag(values.toString());
+                    break;
+                case "location":
+                    itemData.setLocation(values.toString());
+                    break;
+                case "pernm":
+                    itemData.setPernm(values.toString());
+                    break;
+                case "seq":
+                    itemData.setSeq( Integer.parseInt(values.toString()));
+                    break;
+                default:
+                    break;
+            }
+        });
+        ls_inputdate = itemData.getInputdate();
+
+        //log.info("------------");
+        //log.info(itemData.getItemsubject());
+        String year = ls_inputdate.substring(0,4) ;
+        String month = ls_inputdate.substring(5,7) ;
+        String day   = ls_inputdate.substring(8,10) ;
+        ls_inputdate = year + month + day ;
+        itemData.setInputdate(ls_inputdate);
+        int queryResult = 0;
+
+        queryResult = authService.UpdateItem(itemData);
+        if (queryResult < 1) {
+            queryResult = 0;
+            return "UpdateItemData ERROR";
+        }
+
+        return "SUCCESS";
+    }
+
+    @RequestMapping(value="/itemdelete",method = RequestMethod.POST,
+            headers = ("content-type=multipart/*"),
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public Object Appcom01ItemDelete_index(@RequestParam Map<String, String> param
+            , Model model
+            , HttpServletRequest request) throws Exception {
+        String ls_inputdate = "";
+        param.forEach((key, values) -> {
+            switch (key) {
+                case "seq":
+                    itemData.setSeq( Integer.parseInt(values.toString()));
+                    break;
+                default:
+                    break;
+            }
+        });
+        int queryResult = 0;
+        queryResult = authService.DeleteItem(itemData);
+        if (queryResult < 1) {
+            queryResult = 0;
+            return "DeleteItemData ERROR";
+        }
+
+        return "SUCCESS";
+    }
+
     @RequestMapping(value="/itemlist",method = RequestMethod.POST,
             headers = ("content-type=multipart/*"),
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
