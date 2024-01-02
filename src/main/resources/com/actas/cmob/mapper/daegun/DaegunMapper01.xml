@@ -58,7 +58,8 @@
         <![CDATA[
         select  A.seq, A.custcd, substring(A.inputdate, 0,5) + '-' + substring(A.inputdate, 5,2) + '-' + substring(A.inputdate, 7,2) as inputdate,
                 A.itemsubject, isnull(A.pernm, '') as pernm, A.itemmemo, A.flag, isnull(A.location, '') as location,
-                (case A.flag  when '001' then '분실' when '002' then '습득' else '' end ) as flagnm, boxpass, endmemo, enddate
+                (case A.flag  when '001' then '분실' when '002' then '습득' else '' end ) as flagnm, boxpass, endmemo,
+                substring(A.enddate, 0,5) + '-' + substring(A.enddate, 5,2) + '-' + substring(A.enddate, 7,2) as enddate
         from TB_ITEMLIST A WITH (NOLOCK)
         where   A.itemsubject like CONCAT('%',#{itemsubject},'%') and reflag = 'Y'
         ORDER BY A.seq desc , A.inputdate, A.itemsubject
