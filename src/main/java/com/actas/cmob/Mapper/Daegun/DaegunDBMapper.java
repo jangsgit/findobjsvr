@@ -21,9 +21,11 @@ public interface DaegunDBMapper {
     public int InsertXusers(DaegunXusers parm) ;
     public int InsertItem(DaegunItemList parm) ;
     public int UpdateItem(DaegunItemList parm) ;
+    public int CompleteItem(DaegunItemList parm) ;
     public int DeleteItem(DaegunItemList parm) ;
 
     public List<DaegunItemList> GetItemList(DaegunItemList parm) ;
+    public List<DaegunItemList> GetItemListEnd(DaegunItemList parm) ;
 
 
 }

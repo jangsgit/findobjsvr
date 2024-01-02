@@ -112,6 +112,12 @@ public class Appdaegun01Controller {
                 case "pernm":
                     itemData.setPernm(values.toString());
                     break;
+                case "userid":
+                    itemData.setUserid(values.toString());
+                    break;
+                case "boxpass":
+                    itemData.setBoxpass(values.toString());
+                    break;
                 default:
                     break;
             }
@@ -163,6 +169,9 @@ public class Appdaegun01Controller {
                     break;
                 case "pernm":
                     itemData.setPernm(values.toString());
+                    break;
+                case "boxpass":
+                    itemData.setBoxpass(values.toString());
                     break;
                 case "seq":
                     itemData.setSeq( Integer.parseInt(values.toString()));
@@ -217,6 +226,40 @@ public class Appdaegun01Controller {
         return "SUCCESS";
     }
 
+
+    @RequestMapping(value="/itemcomplete",method = RequestMethod.POST,
+            headers = ("content-type=multipart/*"),
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public Object Appcom01ItemComplete_index(@RequestParam Map<String, String> param
+            , Model model
+            , HttpServletRequest request) throws Exception {
+        String ls_inputdate = "";
+        param.forEach((key, values) -> {
+            switch (key) {
+                case "endmemo":
+                    itemData.setEndmemo(values.toString());
+                    break;
+                case "seq":
+                    itemData.setSeq( Integer.parseInt(values.toString()));
+                    break;
+                default:
+                    break;
+            }
+        });
+        itemData.setEnddate(getToDate());
+
+        int queryResult = 0;
+
+        queryResult = authService.CompleteItem(itemData);
+        if (queryResult < 1) {
+            queryResult = 0;
+            return "CompleteItemData ERROR";
+        }
+
+        return "SUCCESS";
+    }
+
+
     @RequestMapping(value="/itemlist",method = RequestMethod.POST,
             headers = ("content-type=multipart/*"),
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -242,6 +285,30 @@ public class Appdaegun01Controller {
         return itemDataList;
     }
 
+    @RequestMapping(value="/itemlistend",method = RequestMethod.POST,
+            headers = ("content-type=multipart/*"),
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public Object AppcomListEnd_index(@RequestParam Map<String, String> param
+            , Model model
+            , HttpServletRequest request) throws Exception{
+        param.forEach((key, values) -> {
+            switch (key){
+                case "custcd":
+                    itemData.setCustcd(values.toString());
+                    break;
+                case "searchtxt":
+                    itemData.setItemsubject(values.toString());
+                default:
+                    break;
+            }
+        });
+        String ls_search = itemData.getItemsubject();
+        if(ls_search.equals("") || ls_search == null){
+            itemData.setItemsubject("%");
+        }
+        itemDataList = authService.GetItemListEnd(itemData);
+        return itemDataList;
+    }
 
     private String getToDate() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");

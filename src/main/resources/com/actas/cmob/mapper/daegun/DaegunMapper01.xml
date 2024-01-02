@@ -5,7 +5,7 @@
 <mapper namespace="com.actas.cmob.Mapper.Daegun.DaegunDBMapper">
 
     <select id="GetUserInfo" parameterType="com.actas.cmob.DTO.UserFormDto"  resultType="com.actas.cmob.DTO.UserFormDto">
-        select top 1 userid, passwd1,  custcd, custnm, pernm, useyn
+        select top 1 userid, passwd1,  custcd, custnm, pernm, useyn , (select sum(isnull(point,0)) as totpoint from tb_itemlist where userid  =#{userid} ) as totpoint
         from TB_XUSERS where userid=#{userid} and passwd1=#{passwd1}
     </select>
 
@@ -17,16 +17,20 @@
 
 
     <insert id="InsertItem" parameterType="com.actas.cmob.DTO.Daegun.DaegunItemList" >
-        insert into TB_ITEMLIST (custcd, inputdate, itemsubject, pernm, itemmemo, flag, location) values
-        (#{custcd}, #{inputdate},  #{itemsubject}, #{pernm}, #{itemmemo}, #{flag}, #{location} )
+        insert into TB_ITEMLIST (custcd, inputdate, itemsubject, pernm, itemmemo, flag, location, reflag, boxpass, userid) values
+        (#{custcd}, #{inputdate},  #{itemsubject}, #{pernm}, #{itemmemo}, #{flag}, #{location} , 'N', #{boxpass}, #{userid})
     </insert>
 
 
     <update id="UpdateItem" parameterType="com.actas.cmob.DTO.Daegun.DaegunItemList" >
-        update TB_ITEMLIST set inputdate = #{inputdate}, itemsubject = #{itemsubject}, pernm =#{pernm}, itemmemo =#{itemmemo}, flag =#{flag}, location =#{location}
+        update TB_ITEMLIST set inputdate = #{inputdate}, itemsubject = #{itemsubject}, pernm =#{pernm}, itemmemo =#{itemmemo}, flag =#{flag}, location =#{location}, boxpass=#{boxpass}
         where seq = #{seq}
     </update>
 
+    <update id="CompleteItem" parameterType="com.actas.cmob.DTO.Daegun.DaegunItemList" >
+        update TB_ITEMLIST set enddate = #{enddate}, endmemo = #{endmemo}, point =1, reflag ='Y'
+        where seq = #{seq}
+    </update>
 
     <delete id="DeleteItem" parameterType="com.actas.cmob.DTO.Daegun.DaegunItemList" >
         delete from TB_ITEMLIST  where seq = #{seq}
@@ -36,9 +40,20 @@
         <![CDATA[
         select  A.seq, A.custcd, substring(A.inputdate, 0,5) + '-' + substring(A.inputdate, 5,2) + '-' + substring(A.inputdate, 7,2) as inputdate,
                A.itemsubject, isnull(A.pernm, '') as pernm, A.itemmemo, A.flag, isnull(A.location, '') as location,
-               (case A.flag  when '001' then '분실' when '002' then '습득' else '' end ) as flagnm
+               (case A.flag  when '001' then '분실' when '002' then '습득' else '' end ) as flagnm, boxpass, endmemo
         from TB_ITEMLIST A WITH (NOLOCK)
-        where A.custcd = #{custcd} and A.itemsubject like CONCAT('%',#{itemsubject},'%')
+        where A.custcd = #{custcd} and A.itemsubject like CONCAT('%',#{itemsubject},'%') and reflag = 'N'
+        ORDER BY A.seq desc , A.inputdate, A.itemsubject
+        ]]>
+    </select>
+
+    <select id="GetItemListEnd" parameterType="com.actas.cmob.DTO.Daegun.DaegunItemList"  resultType="com.actas.cmob.DTO.Daegun.DaegunItemList">
+        <![CDATA[
+        select  A.seq, A.custcd, substring(A.inputdate, 0,5) + '-' + substring(A.inputdate, 5,2) + '-' + substring(A.inputdate, 7,2) as inputdate,
+                A.itemsubject, isnull(A.pernm, '') as pernm, A.itemmemo, A.flag, isnull(A.location, '') as location,
+                (case A.flag  when '001' then '분실' when '002' then '습득' else '' end ) as flagnm, boxpass, endmemo
+        from TB_ITEMLIST A WITH (NOLOCK)
+        where   A.itemsubject like CONCAT('%',#{itemsubject},'%') and reflag = 'Y'
         ORDER BY A.seq desc , A.inputdate, A.itemsubject
         ]]>
     </select>

@@ -17,6 +17,10 @@ public class DaegunItemList {
     private String pernm;
     private String itemmemo;
     private String location;
+    private String boxpass;
+    private String endmemo;
+    private String userid;
+    private String enddate;
     private int point;
 
 }

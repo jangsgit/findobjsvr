@@ -15,5 +15,6 @@ public class DaegunXusers {
     private String pernm;
     private String useyn;
     private String custnm;
+    private int totpoint;
 
 }

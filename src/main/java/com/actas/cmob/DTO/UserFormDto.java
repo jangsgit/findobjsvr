@@ -94,4 +94,6 @@ public class UserFormDto {
     private String pagenm;
 
     private Integer seq;
+
+    private Integer totpoint;
 }

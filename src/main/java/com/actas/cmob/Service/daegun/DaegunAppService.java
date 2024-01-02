@@ -56,6 +56,16 @@ public class DaegunAppService {
         }
         return queryResult;
     }
+    public int CompleteItem(DaegunItemList parm) {
+        int queryResult = 1;
+
+
+        queryResult = daegunMapper.CompleteItem(parm);
+        if (queryResult < 1) {
+            queryResult = 0;
+        }
+        return queryResult;
+    }
 
 
     public int DeleteItem(DaegunItemList parm) {
@@ -72,6 +82,9 @@ public class DaegunAppService {
 
     public List<DaegunItemList> GetItemList(DaegunItemList parm){
                 return daegunMapper.GetItemList(parm);
+    }
+    public List<DaegunItemList> GetItemListEnd(DaegunItemList parm){
+        return daegunMapper.GetItemListEnd(parm);
     }
 
 
