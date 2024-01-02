@@ -16,6 +16,10 @@ public class AuthMobileService {
         return daegunMapper.GetUserInfo(parm);
 
     }
+    public String GetUserCheck(UserFormDto parm){
+        return daegunMapper.GetUserCheck(parm);
+
+    }
 
 
 }

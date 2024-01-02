@@ -17,6 +17,7 @@ import java.util.List;
 public interface DaegunDBMapper {
 
     public UserFormDto GetUserInfo(UserFormDto userinfo);
+    public String GetUserCheck(UserFormDto userinfo);
 
     public int InsertXusers(DaegunXusers parm) ;
     public int InsertItem(DaegunItemList parm) ;

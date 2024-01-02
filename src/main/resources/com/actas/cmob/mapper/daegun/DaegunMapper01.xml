@@ -10,6 +10,13 @@
     </select>
 
 
+    <select id="GetUserCheck" parameterType="com.actas.cmob.DTO.UserFormDto"  resultType="String">
+        <![CDATA[
+            select top 1 custcd
+            from TB_XUSERS where userid=#{userid}
+        ]]>
+    </select>
+
     <insert id="InsertXusers" parameterType="com.actas.cmob.DTO.Daegun.DaegunXusers" >
         insert into TB_XUSERS (custcd, userid, passwd1, passwd2, emailtxt, pernm, custnm, useyn) values
         (#{custcd}, #{userid},  #{passwd1}, #{passwd2}, #{emailtxt}, #{pernm}, #{custnm}, #{useyn})
@@ -57,4 +64,5 @@
         ORDER BY A.seq desc , A.inputdate, A.itemsubject
         ]]>
     </select>
+
 </mapper>

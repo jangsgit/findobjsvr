@@ -3,6 +3,8 @@ package com.actas.cmob.controller.daegun;
 import com.actas.cmob.DTO.Daegun.DaegunItemList;
 import com.actas.cmob.DTO.Daegun.DaegunXusers;
 import com.actas.cmob.DTO.Kosep.*;
+import com.actas.cmob.DTO.UserFormDto;
+import com.actas.cmob.Service.Auth.AuthMobileService;
 import com.actas.cmob.Service.daegun.DaegunAppService;
 import com.actas.cmob.Service.kosep.KosepAppService;
 import lombok.RequiredArgsConstructor;
@@ -29,10 +31,12 @@ import java.util.*;
 public class Appdaegun01Controller {
     protected Log log =  LogFactory.getLog(this.getClass());
     DaegunXusers userinfo = new DaegunXusers();
+    UserFormDto userformDto = new UserFormDto();
     DaegunItemList itemData = new DaegunItemList();
     List<DaegunItemList> itemDataList = new ArrayList<>();
 
     private final DaegunAppService authService;
+    private final AuthMobileService userService;
 
 
 
@@ -70,7 +74,12 @@ public class Appdaegun01Controller {
 
         userinfo.setUseyn("1");
         userinfo.setCustnm("DAEGUN");
-
+        String ls_custcd = "";
+        userformDto.setUserid(userinfo.getUserid());
+        ls_custcd = userService.GetUserCheck(userformDto);
+        if(ls_custcd != null && ls_custcd.length() > 0 ){
+            return "DUP";
+        }
         int queryResult = 0;
         queryResult = authService.InsertXusers(userinfo);
         if (queryResult < 1) {
